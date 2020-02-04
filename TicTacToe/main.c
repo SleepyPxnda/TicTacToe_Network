@@ -12,6 +12,8 @@ int main() {
     SPIELER Spieler1;
     SPIELER Spieler2;
 
+    GetHosttype();
+
     printf("Spieler 1: ");
     scanf("%s", &Spieler1.name);
     printf("Zeichen von %s : ", Spieler1.name);
