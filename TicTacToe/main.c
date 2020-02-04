@@ -12,17 +12,22 @@ int main() {
     SPIELER Spieler1;
     SPIELER Spieler2;
 
+
     printf("Spieler 1: ");
     scanf("%s", &Spieler1.name);
     printf("Zeichen von %s : ", Spieler1.name);
     scanf(" %c", &Spieler1.zeichen);
-    printf("Spieler 1 eingeloggt: %s - %c \n", Spieler1.name, Spieler1.zeichen);
+    printf("Typ von %s (1 Computer, 0 Spieler) : ", Spieler1.name);
+    scanf(" %d", &Spieler1.type);
+    printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler1.name, Spieler1.zeichen, Spieler1.type);
     printf("------------------\n");
     printf("Spieler 2: ");
     scanf("%s", &Spieler2.name);
     printf("Zeichen von %s : ", Spieler2.name);
     scanf(" %c", &Spieler2.zeichen);
-    printf("Spieler 1 eingeloggt: %s - %c \n", Spieler2.name, Spieler2.zeichen);
+    printf("Typ von %s (1 Computer, 0 Spieler) : ", Spieler2.name);
+    scanf(" %d", &Spieler2.type);
+    printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen, Spieler2.type);
 
     int gewinnerValue = 0;
 
@@ -37,33 +42,34 @@ int main() {
 
         drawTicTacToeField(Playfield);
 
+        doTurn(SPIELER);
         KOORDINATE scanKoord;
         if(counter % 2 == 0){
-            printf("%s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", Spieler1.name);
+            if (Spieler1.type == 0){
+                printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", Spieler1.name);
+                scanf("%d %d", &scanKoord.x, &scanKoord.y);
+            }
+            else {
+                //computereingabe
+            }
             scanKoord.value = Spieler1.zeichen;
         }
         else {
-            printf("%s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", Spieler2.name);
+            if (Spieler2.type ==0){
+                printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", Spieler2.name);
+                scanf("%d %d", &scanKoord.x, &scanKoord.y);
+            }
+            else{
+                //computereingabe
+            }
             scanKoord.value = Spieler2.zeichen;
         }
         counter++;
-        scanf("%d %d", &scanKoord.x, &scanKoord.y);
 
         setMarkAtPosition(Playfield, scanKoord);
 
         gewinnerValue = testForWinner(Playfield);
     }
     drawTicTacToeField(Playfield);
-
-    if(gewinnerValue == 2){
-        printf("Das Feld ist voll, Unentschieden");
-        return 1;
-    }
-
-    if(counter % 2 == 0){
-        printf("%s ist Sieger",Spieler1.name);
-    } else {
-        printf("%s ist Sieger",Spieler2.name);
-    }
-    return 1;
+    //ToDo: Ausgabe des Gewinners
 }
