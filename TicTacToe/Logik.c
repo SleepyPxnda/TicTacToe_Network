@@ -11,13 +11,14 @@ void setMarkAtPosition(KOORDINATE Feld[][SPIELFELDGROESSE], KOORDINATE platz){
     int y = platz.y - 1;
 
     if((x >= 0 && x < SPIELFELDGROESSE) && (y >= 0 && y < SPIELFELDGROESSE)) {
-        if (Feld[x][y].value != ' ') {
+        if (Feld[x][y].value == ' ') {
             Feld[x][y].value = platz.value;
-        } else {
-            printf(NUMBEROUTOFBOUNDS);
         }
+    } else {
+        printf(NUMBEROUTOFBOUNDS);
     }
 }
+
 
 int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 
