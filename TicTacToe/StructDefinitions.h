@@ -16,6 +16,7 @@ typedef struct {
 typedef struct {
     char zeichen;
     char name[10];
+    int type;
 }SPIELER;
 
 #define FELD_SIZE 3;

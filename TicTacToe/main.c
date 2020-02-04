@@ -3,9 +3,6 @@
 #include "Feldausgabe.h"
 #include "Logik.h"
 
-int doTurn(SPIELER);
-int randomTurn();
-
 
 int main() {
 
@@ -40,23 +37,29 @@ int main() {
     int counter = 0;
     while(gewinnerValue == 0){
 
-
         drawTicTacToeField(Playfield);
 
-        KOORDINATE scanKoord;
         if(counter % 2 == 0){
-            doTurn(Spieler1);
+            doTurn(Spieler1,Playfield);
         }
         else {
-            doTurn(Spieler2),
-            }
+            doTurn(Spieler2,Playfield);
+        }
         counter++;
-
-        setMarkAtPosition(Playfield, scanKoord);
 
         gewinnerValue = testForWinner(Playfield);
     }
-    drawTicTacToeField(Playfield);
-    //ToDo: Ausgabe des Gewinners
+
+    if(gewinnerValue == 2){
+        printf("Das Feld ist voll, Unentschieden");
+        return 1;
+    }
+
+    if(counter % 2 == 0){
+        printf("%s ist Sieger",Spieler1.name);
+    } else {
+        printf("%s ist Sieger",Spieler2.name);
+    }
+    return 1;
 }
 

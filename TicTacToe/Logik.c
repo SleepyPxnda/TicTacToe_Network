@@ -6,16 +6,16 @@
 #include "ErrorMessages.h"
 #include <stdio.h>
 
-void setMarkAtPosition(KOORDINATE Feld[][SPIELFELDGROESSE], KOORDINATE platz){
+void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORDINATE platz){
     int x = platz.x - 1; // - 1 um eingabe an Array anzupassen, sont würde Eingabe 1,2 Feld 0,1 belegen -> Benutzerfreundlicher
     int y = platz.y - 1;
 
     if((x >= 0 && x < SPIELFELDGROESSE) && (y >= 0 && y < SPIELFELDGROESSE)) {
-        if (Feld[x][y].value != ' ') {
+        if (Feld[x][y].value == ' ') {
             Feld[x][y].value = platz.value;
-        } else {
-            printf(NUMBEROUTOFBOUNDS);
         }
+    } else {
+        printf(NUMBEROUTOFBOUNDS);
     }
 }
 
@@ -94,26 +94,14 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     return 0;
 }
 
-int doTurn(SPIELER player){
+void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
+    KOORDINATE scanKoord;
     if (player.type == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
         scanf("%d %d", &scanKoord.x, &scanKoord.y);
     }
-    else {
-        computerTurn();
-    }
     scanKoord.value = player.zeichen;
 
-    return 1;
+    setMarkAtPosition(Feld,scanKoord);
 }
-int computerTurn(){
-    for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
-        for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
-            if (Feld[reihe][spalte].value) == ' '{
-                &scanKoord.x = reihe;
-                &scanKoord.y = spalte;
-                return 1;
-            }
-        }
-    }
-}
+
