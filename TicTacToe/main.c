@@ -3,7 +3,8 @@
 #include "Feldausgabe.h"
 #include "Logik.h"
 
-
+int doTurn(SPIELER);
+int randomTurn();
 
 
 int main() {
@@ -42,28 +43,13 @@ int main() {
 
         drawTicTacToeField(Playfield);
 
-        doTurn(SPIELER);
         KOORDINATE scanKoord;
         if(counter % 2 == 0){
-            if (Spieler1.type == 0){
-                printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", Spieler1.name);
-                scanf("%d %d", &scanKoord.x, &scanKoord.y);
-            }
-            else {
-                //computereingabe
-            }
-            scanKoord.value = Spieler1.zeichen;
+            doTurn(Spieler1);
         }
         else {
-            if (Spieler2.type ==0){
-                printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", Spieler2.name);
-                scanf("%d %d", &scanKoord.x, &scanKoord.y);
+            doTurn(Spieler2),
             }
-            else{
-                //computereingabe
-            }
-            scanKoord.value = Spieler2.zeichen;
-        }
         counter++;
 
         setMarkAtPosition(Playfield, scanKoord);
@@ -73,3 +59,4 @@ int main() {
     drawTicTacToeField(Playfield);
     //ToDo: Ausgabe des Gewinners
 }
+

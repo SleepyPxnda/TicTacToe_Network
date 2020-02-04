@@ -93,3 +93,27 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 
     return 0;
 }
+
+int doTurn(SPIELER player){
+    if (player.type == 0){
+        printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
+        scanf("%d %d", &scanKoord.x, &scanKoord.y);
+    }
+    else {
+        computerTurn();
+    }
+    scanKoord.value = player.zeichen;
+
+    return 1;
+}
+int computerTurn(){
+    for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
+        for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
+            if (Feld[reihe][spalte].value) == ' '{
+                &scanKoord.x = reihe;
+                &scanKoord.y = spalte;
+                return 1;
+            }
+        }
+    }
+}
