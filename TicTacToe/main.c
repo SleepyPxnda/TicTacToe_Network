@@ -61,9 +61,9 @@ int main() {
     }
 
     if(counter % 2 == 0){
-        printf("%s ist Sieger",Spieler1.name);
-    } else {
         printf("%s ist Sieger",Spieler2.name);
+    } else {
+        printf("%s ist Sieger",Spieler1.name);
     }
     return 1;
 }
