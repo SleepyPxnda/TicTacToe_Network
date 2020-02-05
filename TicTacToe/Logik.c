@@ -5,6 +5,8 @@
 #include "StructDefinitions.h"
 #include "ErrorMessages.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORDINATE platz){
     int x = platz.x - 1; // - 1 um eingabe an Array anzupassen, sont würde Eingabe 1,2 Feld 0,1 belegen -> Benutzerfreundlicher
@@ -94,14 +96,47 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     return 0;
 }
 
+KOORDINATE getCoordinateForComputer(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
+
+    KOORDINATE computerKoord;
+
+    srand(time(0));
+
+    int x = (rand() % SPIELFELDGROESSE) + 1;
+    int y = (rand() % SPIELFELDGROESSE) + 1;
+
+    while(Feld[x][y].value == ' '){
+
+        x = (rand() % SPIELFELDGROESSE) + 1;
+        y = (rand() % SPIELFELDGROESSE) + 1;
+
+        computerKoord.x = x;
+        computerKoord.y = y;
+    }
+
+    return computerKoord;
+
+}
+
 void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
     KOORDINATE scanKoord;
+
     if (player.type == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
         scanf("%d %d", &scanKoord.x, &scanKoord.y);
+    } else
+        if(player.type == 1){
+        scanKoord = getCoordinateForComputer(Feld);
+
+        printf("Der Computer hat ein Zeichen an %d , %d gesetzt\n", scanKoord.x, scanKoord.y);
+        printf("Drücke einen Knopf um fortzufahren ...\n");
+        getchar();
     }
+
     scanKoord.value = player.zeichen;
 
     setMarkAtPosition(Feld,scanKoord);
 }
+
+
 

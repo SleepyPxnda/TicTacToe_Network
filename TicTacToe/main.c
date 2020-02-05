@@ -1,10 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "StructDefinitions.h"
 #include "Feldausgabe.h"
 #include "Logik.h"
 
 
 int main() {
+
+
 
     KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
     SPIELER Spieler1;
@@ -56,9 +60,9 @@ int main() {
     }
 
     if(counter % 2 == 0){
-        printf("%s ist Sieger",Spieler1.name);
-    } else {
         printf("%s ist Sieger",Spieler2.name);
+    } else {
+        printf("%s ist Sieger",Spieler1.name);
     }
     return 1;
 }
