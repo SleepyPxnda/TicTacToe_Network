@@ -59,6 +59,8 @@ int main() {
         return 1;
     }
 
+    drawTicTacToeField(Playfield);
+
     if(counter % 2 == 0){
         printf("%s ist Sieger",Spieler2.name);
     } else {

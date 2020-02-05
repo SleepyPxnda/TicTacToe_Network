@@ -110,9 +110,11 @@ KOORDINATE getCoordinateForComputer(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDG
         x = (rand() % SPIELFELDGROESSE) + 1;
         y = (rand() % SPIELFELDGROESSE) + 1;
 
-        computerKoord.x = x;
-        computerKoord.y = y;
+
     }
+
+    computerKoord.x = x;
+    computerKoord.y = y;
 
     return computerKoord;
 
