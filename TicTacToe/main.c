@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "StructDefinitions.h"
 #include "Feldausgabe.h"
 #include "Logik.h"
@@ -33,13 +32,15 @@ int main() {
 
     int gewinnerValue = 0;
 
-    for(int i = 0; i < SPIELFELDGROESSE; i++) {
-        for (int j = 0; j < SPIELFELDGROESSE; j++) {
-            Playfield[i][j].value = ' ';
+    for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++) {
+        for (int reihe = 0; reihe < SPIELFELDGROESSE; reihe++) {
+            Playfield[reihe][spalte].value = CELLPLACEHOLDER;
         }
     }
     int counter = 0;
     while(gewinnerValue == 0){
+
+        printf("Spielrunde : %d\n", counter);
 
         drawTicTacToeField(Playfield);
 
@@ -52,6 +53,8 @@ int main() {
         counter++;
 
         gewinnerValue = testForWinner(Playfield);
+
+        //system("clear");
     }
 
     if(gewinnerValue == 2){

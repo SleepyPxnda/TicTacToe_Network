@@ -5,10 +5,10 @@
 #include <stdio.h>
 
 void drawTicTacToeField(KOORDINATE Feld[][SPIELFELDGROESSE]){
-    for(int i = 0; i < SPIELFELDGROESSE; i++){
+    for(int spalte = 0;spalte  < SPIELFELDGROESSE; spalte++){
         printf("| ");
-        for(int j = 0; j < SPIELFELDGROESSE; j++){
-            printf("%c",Feld[j][i].value);
+        for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
+            printf("%c",Feld[spalte][reihe].value);
             printf(" | ");
         }
         printf("\n- - - - - - -\n");

@@ -4,6 +4,7 @@
 
 #include "StructDefinitions.h"
 #include "ErrorMessages.h"
+#include "ComputerLogic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -13,7 +14,7 @@ void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOOR
     int y = platz.y - 1;
 
     if((x >= 0 && x < SPIELFELDGROESSE) && (y >= 0 && y < SPIELFELDGROESSE)) {
-        if (Feld[x][y].value == ' ') {
+        if (Feld[x][y].value == CELLPLACEHOLDER) {
             Feld[x][y].value = platz.value;
         }
     } else {
@@ -27,7 +28,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
         int rowCellEquals = 0;
         for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
-            if(Feld[reihe][spalte].value != ' ') {
+            if(Feld[reihe][spalte].value != CELLPLACEHOLDER) {
                 if (Feld[reihe][spalte].value == Feld[reihe][spalte + 1].value) {
                     rowCellEquals += 1;
                 }
@@ -42,7 +43,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
         int rowCellEquals = 0;
         for(int reihe = 0; reihe < SPIELFELDGROESSE ; reihe++){
-                if(Feld[reihe][spalte].value != ' ') {
+                if(Feld[reihe][spalte].value != CELLPLACEHOLDER) {
                     if (Feld[reihe][spalte].value == Feld[reihe + 1][spalte].value) {
                         rowCellEquals += 1;
                     }
@@ -56,7 +57,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     //Diagonal Check for Win
     int rowCellsEqualsUp = 0;
     for(int diagonal = 0; diagonal < SPIELFELDGROESSE; diagonal++){
-        if(Feld[diagonal][diagonal].value != ' '){
+        if(Feld[diagonal][diagonal].value != CELLPLACEHOLDER){
             if(Feld[diagonal][diagonal].value == Feld[diagonal + 1][diagonal + 1].value){
                 rowCellsEqualsUp +=1;
             }
@@ -69,7 +70,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     int rowCellsEquals = 0;
     for(int spalte = SPIELFELDGROESSE - 1; spalte >= 0; spalte--){
         for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
-            if(Feld[reihe][spalte].value != ' '){
+            if(Feld[reihe][spalte].value != CELLPLACEHOLDER){
                 if(Feld[reihe][spalte].value == Feld[reihe + 1][spalte - 1].value){
                     rowCellsEquals += 1;
                 }
@@ -83,7 +84,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     int maxCells = 0;
     for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
         for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
-            if(Feld[spalte][reihe].value != ' '){
+            if(Feld[spalte][reihe].value != CELLPLACEHOLDER){
                 maxCells += 1;
             }
         }
@@ -96,29 +97,6 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     return 0;
 }
 
-KOORDINATE getCoordinateForComputer(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
-
-    KOORDINATE computerKoord;
-
-    srand(time(0));
-
-    int x = (rand() % SPIELFELDGROESSE) + 1;
-    int y = (rand() % SPIELFELDGROESSE) + 1;
-
-    while(Feld[x][y].value == ' '){
-
-        x = (rand() % SPIELFELDGROESSE) + 1;
-        y = (rand() % SPIELFELDGROESSE) + 1;
-
-
-    }
-
-    computerKoord.x = x;
-    computerKoord.y = y;
-
-    return computerKoord;
-
-}
 
 void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
     KOORDINATE scanKoord;
@@ -130,9 +108,7 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE])
         if(player.type == 1){
         scanKoord = getCoordinateForComputer(Feld);
 
-        printf("Der Computer hat ein Zeichen an %d , %d gesetzt\n", scanKoord.x, scanKoord.y);
-        printf("Drücke einen Knopf um fortzufahren ...\n");
-        getchar();
+        printf("Der Computer %s hat ein Zeichen an %d , %d gesetzt\n",player.name, scanKoord.x, scanKoord.y);
     }
 
     scanKoord.value = player.zeichen;
