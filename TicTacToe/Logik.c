@@ -9,7 +9,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORDINATE platz){
+extern int SPIELFELDGROESSE;
+
+int setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORDINATE platz){
     int x = platz.x - 1; // - 1 um eingabe an Array anzupassen, sont würde Eingabe 1,2 Feld 0,1 belegen -> Benutzerfreundlicher
     int y = platz.y - 1;
 
@@ -17,10 +19,14 @@ void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOOR
 
         if (Feld[x][y].value == CELLPLACEHOLDER) {
             Feld[x][y].value = platz.value;
+        }else
+        {
+            return 0;
         }
     } else {
         printf(NUMBEROUTOFBOUNDS);
     }
+    return 1;
 }
 
 
@@ -94,8 +100,6 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     if(maxCells == SPIELFELDGROESSE * SPIELFELDGROESSE){
         return 2;
     }
-
-
     return 0;
 }
 
@@ -103,19 +107,22 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
     KOORDINATE scanKoord;
 
+
     if (player.type == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
         scanf("%d %d", &scanKoord.x, &scanKoord.y);
     } else
         if(player.type == 1){
         scanKoord = getCoordinateForComputer(Feld);
-
         printf("Der Computer %s hat ein Zeichen an %d , %d gesetzt\n",player.name, scanKoord.x, scanKoord.y);
     }
 
     scanKoord.value = player.zeichen;
 
-    setMarkAtPosition(Feld,scanKoord);
+    while(setMarkAtPosition(Feld,scanKoord) == 0){
+        printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
+        scanf("%d %d", &scanKoord.x, &scanKoord.y);
+    }
 }
 
 

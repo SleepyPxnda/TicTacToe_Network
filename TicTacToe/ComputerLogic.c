@@ -7,6 +7,8 @@
 #include "ComputerLogic.h"
 #include "StructDefinitions.h"
 
+extern int SPIELFELDGROESSE;
+
 KOORDINATE getCoordinateForComputer(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 
     KOORDINATE computerKoord;

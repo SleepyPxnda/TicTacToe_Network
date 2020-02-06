@@ -4,16 +4,28 @@
 #include "Feldausgabe.h"
 #include "Logik.h"
 
+int SPIELFELDGROESSE;
 
 int main() {
 
-
-
-    KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
     SPIELER Spieler1;
     SPIELER Spieler2;
 
+    printf("Spieleinstellungen\n");
+    printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
+    scanf("%d", &SPIELFELDGROESSE);
 
+    if(SPIELFELDGROESSE < 3){
+        SPIELFELDGROESSE = 3;
+    }
+    if(SPIELFELDGROESSE > 10){
+        SPIELFELDGROESSE = 10;
+    }
+
+    KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
+
+    printf("------------------\n");
+    printf("Spielereinstellungen\n");
     printf("Spieler 1: ");
     scanf("%s", &Spieler1.name);
     printf("Zeichen von %s : ", Spieler1.name);
@@ -37,10 +49,11 @@ int main() {
             Playfield[reihe][spalte].value = CELLPLACEHOLDER;
         }
     }
+    system("clear");
     int counter = 0;
     while(gewinnerValue == 0){
 
-        printf("Spielrunde : %d\n", counter);
+        printf("Zug : %d\n", counter);
 
         drawTicTacToeField(Playfield);
 
@@ -54,20 +67,20 @@ int main() {
 
         gewinnerValue = testForWinner(Playfield);
 
-        //system("clear");
+        system("clear");
     }
 
     if(gewinnerValue == 2){
-        printf("Das Feld ist voll, Unentschieden");
+        printf("Das Feld ist voll, Unentschieden\n");
         return 1;
     }
 
     drawTicTacToeField(Playfield);
 
     if(counter % 2 == 0){
-        printf("%s ist Sieger",Spieler2.name);
+        printf("%s ist Sieger\n",Spieler2.name);
     } else {
-        printf("%s ist Sieger",Spieler1.name);
+        printf("%s ist Sieger\n",Spieler1.name);
     }
     return 1;
 }
