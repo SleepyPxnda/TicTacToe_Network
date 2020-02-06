@@ -14,6 +14,7 @@ void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOOR
     int y = platz.y - 1;
 
     if((x >= 0 && x < SPIELFELDGROESSE) && (y >= 0 && y < SPIELFELDGROESSE)) {
+
         if (Feld[x][y].value == CELLPLACEHOLDER) {
             Feld[x][y].value = platz.value;
         }
@@ -21,6 +22,7 @@ void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOOR
         printf(NUMBEROUTOFBOUNDS);
     }
 }
+
 
 int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 
