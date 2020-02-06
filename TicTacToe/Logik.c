@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 extern int SPIELFELDGROESSE;
 
@@ -75,17 +76,22 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         return 1;
     }
 
-    int rowCellsEquals = 0;
-    for(int spalte = SPIELFELDGROESSE - 1; spalte >= 0; spalte--){
-        for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
-            if(Feld[reihe][spalte].value != CELLPLACEHOLDER){
-                if(Feld[reihe][spalte].value == Feld[reihe + 1][spalte - 1].value){
-                    rowCellsEquals += 1;
-                }
+    //Anti Diagonal Check for Win
+    //ToDo: Check works for Players but not for Computers
+    int rowCellsEqualsDown = 0;
+    int diagonalreihe = (SPIELFELDGROESSE - 1);
+    int diagonalspalte = 0;
+
+    for(int diagonal = 0; diagonal < SPIELFELDGROESSE; diagonal++){
+        if(Feld[diagonalreihe][diagonalspalte].value != CELLPLACEHOLDER){
+            if(Feld[diagonalreihe][diagonalspalte].value == Feld[diagonalreihe - 1][diagonalspalte + 1].value){
+                rowCellsEqualsDown += 1;
             }
         }
+        diagonalreihe--;
+        diagonalspalte++;
     }
-    if(rowCellsEquals == SPIELFELDGROESSE - 1){
+    if(rowCellsEqualsDown == SPIELFELDGROESSE - 1){
         return 1;
     }
 
@@ -113,6 +119,7 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE])
         scanf("%d %d", &scanKoord.x, &scanKoord.y);
     } else
         if(player.type == 1){
+            sleep(1);
         scanKoord = getCoordinateForComputer(Feld);
         printf("Der Computer %s hat ein Zeichen an %d , %d gesetzt\n",player.name, scanKoord.x, scanKoord.y);
     }
