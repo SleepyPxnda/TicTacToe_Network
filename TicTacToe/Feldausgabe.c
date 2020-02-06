@@ -4,6 +4,8 @@
 #include "StructDefinitions.h"
 #include <stdio.h>
 
+extern int SPIELFELDGROESSE;
+
 void drawTicTacToeField(KOORDINATE Feld[][SPIELFELDGROESSE]){
     for(int spalte = 0;spalte  < SPIELFELDGROESSE; spalte++){
         printf("| ");
@@ -11,6 +13,12 @@ void drawTicTacToeField(KOORDINATE Feld[][SPIELFELDGROESSE]){
             printf("%c",Feld[spalte][reihe].value);
             printf(" | ");
         }
-        printf("\n- - - - - - -\n");
+
+        printf("\n");
+        for(int i = 0; i <= (SPIELFELDGROESSE * 2); i++){
+            printf("- ");
+
+        }
+        printf("\n");
     }
 }

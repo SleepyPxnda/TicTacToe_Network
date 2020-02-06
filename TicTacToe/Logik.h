@@ -6,6 +6,7 @@
 #define TICTACTOE_LOGIK_H
 
 #include "StructDefinitions.h"
+extern int SPIELFELDGROESSE;
 
 int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]);
 void setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORDINATE platz);
