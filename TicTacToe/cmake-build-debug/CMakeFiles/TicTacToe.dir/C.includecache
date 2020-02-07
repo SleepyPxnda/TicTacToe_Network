@@ -6,27 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ComputerLogic.h
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/Feldausgabe.h
 StructDefinitions.h
 /cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
 
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ErrorMessages.h
-
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/Logik.c
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/Logik.h
 StructDefinitions.h
 /cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
-ErrorMessages.h
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ErrorMessages.h
-ComputerLogic.h
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ComputerLogic.h
+
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
+
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/main.c
 stdio.h
 -
 stdlib.h
 -
-time.h
--
-unistd.h
--
-
+StructDefinitions.h
 /cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
+Feldausgabe.h
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/Feldausgabe.h
+Logik.h
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/Logik.h
+string.h
+-
 
