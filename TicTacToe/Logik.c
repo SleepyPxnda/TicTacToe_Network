@@ -13,7 +13,7 @@
 extern int SPIELFELDGROESSE;
 
 int setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORDINATE platz){
-    int x = platz.x - 1; // - 1 um eingabe an Array anzupassen, sont würde Eingabe 1,2 Feld 0,1 belegen -> Benutzerfreundlicher
+    int x = platz.x - 1; // - 1 um eingabe an Array anzupassen, sonst würde Eingabe 1,2 Feld 0,1 belegen -> Benutzerfreundlicher
     int y = platz.y - 1;
 
     if((x >= 0 && x < SPIELFELDGROESSE) && (y >= 0 && y < SPIELFELDGROESSE)) {
@@ -40,10 +40,12 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
             if(Feld[reihe][spalte].value != CELLPLACEHOLDER) {
                 if (Feld[reihe][spalte].value == Feld[reihe][spalte + 1].value) {
                     rowCellEquals += 1;
+
                 }
             }
         }
         if(rowCellEquals == SPIELFELDGROESSE - 1){
+
             return 1;
         }
     }
@@ -91,7 +93,10 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         diagonalreihe--;
         diagonalspalte++;
     }
-    if(rowCellsEqualsDown == SPIELFELDGROESSE - 1){
+    if(rowCellsEqualsDown == SPIELFELDGROESSE - 1){   // Abfrage für Spieler
+        return 1;
+    }
+    if(rowCellsEqualsDown == SPIELFELDGROESSE){       // Abfrage für Computer, weil andere Koordinateneinheit
         return 1;
     }
 
@@ -116,7 +121,7 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE])
 
     if (player.type == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
-        scanf("%d %d", &scanKoord.x, &scanKoord.y);
+        scanf(" %d %d", &scanKoord.x, &scanKoord.y);
     } else
         if(player.type == 1){
             sleep(1);
@@ -128,7 +133,7 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE])
 
     while(setMarkAtPosition(Feld,scanKoord) == 0){
         printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
-        scanf("%d %d", &scanKoord.x, &scanKoord.y);
+        scanf(" %d %d", &scanKoord.x, &scanKoord.y);
     }
 }
 
