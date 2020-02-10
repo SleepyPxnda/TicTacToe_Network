@@ -79,7 +79,6 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     }
 
     //Anti Diagonal Check for Win
-    //ToDo: Check works for Players but not for Computers
     int rowCellsEqualsDown = 0;
     int diagonalreihe = (SPIELFELDGROESSE - 1);
     int diagonalspalte = 0;
@@ -96,7 +95,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     if(rowCellsEqualsDown == SPIELFELDGROESSE - 1){   // Abfrage für Spieler
         return 1;
     }
-    if(rowCellsEqualsDown == SPIELFELDGROESSE){       // Abfrage für Computer, weil andere Koordinateneinheit
+    if(rowCellsEqualsDown == SPIELFELDGROESSE){       // Abfrage für Computer, weil andere Koordinateneinheit FIX?
         return 1;
     }
 
