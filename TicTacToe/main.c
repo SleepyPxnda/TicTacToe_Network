@@ -3,6 +3,7 @@
 #include "StructDefinitions.h"
 #include "Feldausgabe.h"
 #include "Logik.h"
+#include <string.h>
 
 int SPIELFELDGROESSE;
 
@@ -26,6 +27,7 @@ int main() {
 
     printf("------------------\n");
     printf("Spielereinstellungen\n");
+    //Spieler 1
     printf("Spieler 1: ");
     scanf("%s", &Spieler1.name);
     printf("Zeichen von %s : ", Spieler1.name);
@@ -34,10 +36,19 @@ int main() {
     scanf(" %d", &Spieler1.type);
     printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler1.name, Spieler1.zeichen, Spieler1.type);
     printf("------------------\n");
+    //Spieler 2
     printf("Spieler 2: ");
     scanf("%s", &Spieler2.name);
+   while (strcmp(Spieler2.name, Spieler1.name) == 0){
+        printf("Bitte anderen Namen eingeben\n");
+        scanf(" %s", &Spieler2.name);
+    };
     printf("Zeichen von %s : ", Spieler2.name);
     scanf(" %c", &Spieler2.zeichen);
+    while (Spieler2.zeichen == Spieler1.zeichen){
+        printf("Bitte anderes Zeichen eingeben\n");
+        scanf(" %c", &Spieler2.zeichen);
+    }
     printf("Typ von %s (1 Computer, 0 Spieler) : ", Spieler2.name);
     scanf(" %d", &Spieler2.type);
     printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen, Spieler2.type);
