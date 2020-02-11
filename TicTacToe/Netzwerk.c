@@ -10,9 +10,12 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <string.h>
-#include <pthread.h>
-#include <unistd.h>
+#include <windows.h>
+#include <tchar.h>
+#include <strsafe.h>
 
+#define MAX_THREADS 3
+#define BUF_SIZE 255
 
 
 //für TCP hinzugefügt - was macht das??
@@ -22,46 +25,58 @@
 //#pragma comment(lib,"WS2_32")//Winsock Library, die für Funktionen der winsock2.h notwending ist.
 
 char hosttyp = ' ';
-int ippart1,ippart2,ippart3,ippart4;
-// Network Test
-//char *Pmessage = 'a';
-int listenfd = 0;
-//struct sockadrr_in serv_addr;
-char buffer[1024];
-char buffer_reply[2000];
+char DataToMe[8] = "Moin";
 char targetIP[256];
 char OwnIP[256];
-int numvr=0;
+int Verbindung = 1;
+SOCKET ClientSocket = INVALID_SOCKET;
+
 
 // IPv4 AF_INET sockets:
 
+int GetOtherSocket() {
+    return ClientSocket;
+}
+
 int SendMessageToClient(int socketfd, char *message){
 
-    // Send Data to test client in Byte?
     int n = 0; // Debug
     n = send(socketfd,message,(strlen(message)+1),0); //Wieso übergebe ich hier ein CHAR
     if(n<0) {
         printf("Error sending to Server");
     } else if ( n == 0 ) {printf("Server closed the Connection.\n");}
 
-    //printf("message: %c \n", message);
+    printf("message: %s \n", message);
     return n;
 
 
 }
 
-int ReadMessage(int socket, char * buffer) {
+int ReadMessage(int socket, char * DataToMe) {
     int i, recv_size;
 
     // recv wartet bis andere Client daten zurücksendet
     printf("t");
-    if ((recv_size = recv(socket , buffer , 2000 , 0)) == SOCKET_ERROR) {
-        puts("recv failed");
-    } else {puts("recv success");}
-    puts(buffer);
+    if ((recv_size = recv(socket , DataToMe , 7 , 0)) == SOCKET_ERROR) {
+        puts("recv failed \n");
+    } else {puts("recv success \n");}
+    puts(DataToMe);
 
 }
 
+DWORD WINAPI ThreadFunc(void* data) {
+    // Do stuff.  This will be the first function called on the new thread.
+    // When this function returns, the thread goes away.  See MSDN for more details.
+    printf("thread meldet sich! \n");
+    while(Verbindung == 1) {
+        Sleep(500);
+        ReadMessage(0,DataToMe);
+        printf("ich lese...\n");
+    }
+
+
+    // return 0; return löscht thread
+}
 
 
 int GetHosttype() {
@@ -81,15 +96,7 @@ int GetHosttype() {
     printf("Sind Sie Host oder Client? [H] [C]. \n");
     scanf(" %c", &hosttyp);
     printf("Willkommen %c \n",hosttyp);
-    /* nun ersetzt durch INADDR_ANY
-    do {
-        printf("Bitte geben sie Ihre IP Adresse an. \n");
-        printf("Format ist: XXX.XXX.XXX.XXX \n");
-        scanf(" %s", &OwnIP);
-        printf("Ist %s richtig? ###[y] [n]### \n", OwnIP);
-        scanf(" %c", &Ceingabe);
-    }while(Ceingabe == 'n');
-    */
+
     do {
         printf("Mit wem wollen sie sich verbinden?\n");
         printf("Bitte geben sie die IP Adresse des Partners an. \n");
@@ -159,37 +166,29 @@ int GetHosttype() {
 
 
 
-
-
-        SOCKET ClientSocket;
-        ClientSocket = INVALID_SOCKET;
+        printf("Akzeptiere einkommende Anfragen von Partner...\n");
 
         while(ClientSocket == INVALID_SOCKET) {
             ClientSocket = INVALID_SOCKET;
-            printf("test");
+            printf("Warte auf Client Anfrage... \n");
             ClientSocket = accept(sock, NULL, NULL);
             if (ClientSocket == INVALID_SOCKET) {
                 printf("accept failed with error %d\n", WSAGetLastError());
-                //closesocket(sock);
-                //WSACleanup;
 
             }
         }
 
+        connfd = ClientSocket;
 
-
-
-        printf("Akzeptiere einkommende Anfragen von Partner...\n");
-
-
-         //connfd = accept(sock, (struct sockaddr*)&cli, &len);
                 if(connfd < 0 ){
                     printf("Server akzeptiert Client nicht\n");
                 } else {
                     printf ("Server akzeptiert Client\n");
                 }
 
-                printf("Server ist fertig");
+
+       // SendMessageToClient(ClientSocket,DataToHim);
+
 
 
 
@@ -218,8 +217,6 @@ int GetHosttype() {
             return -1;
         } else { printf("Socket erstellt.\n"); }
 
-        //weise IP & Port zu
-        //Dennis Server IP: 141.31.83.34
         server.sin_addr.s_addr = inet_addr(&targetIP[0]); //127.0.0.1 wäre local
         server.sin_family = AF_INET;
         server.sin_port = htons(8080);
@@ -233,128 +230,17 @@ int GetHosttype() {
             exit(0);
         }
         else
-            printf("connected to the server..\n");
-
-        //ConnectToServer();
+            printf("VERBUNDEN\n");
     }
 
-    //closesocket(sock);
-
-    /*
-   * Creating TCP socket
-   */
-
-    //Beispiel auf google server connecten
-    //server addr. ist der client/Host
-    //IpAdresseFormatieren();
-    //server.sin_addr.s_addr = inet_addr(targetIP); //QUOT stand für "", da man die "" nicht hinzufügen kann.
-
-/*
-    printf("\nInitialising Winsock...");
-    // Socket wird aufgebaut...
-    if ( WSAStartup(MAKEWORD(2,2),&wsa) != 0)
-    {
-        printf("Failed. Error Code : %d",WSAGetLastError());
-        return 1;
-    } else {
-        printf("socket retrieve success\n");
+    HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);
+    if (thread) {
+        // Optionally do stuff, such as wait on the thread.
+        printf("Thread wird gestartet...\n");
+        Sleep(2000);
+        printf("Thread ist erfolgreich gestartet.\n");
+        CloseHandle(thread);
     }
-
-    if((sock = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
-    {
-        printf("Could not create socket : %d \n" , WSAGetLastError());
-        return -1;
-    } else { printf("Socket created.\n"); }
-
-    server.sin_addr.s_addr = inet_addr(&targetIP[0]); //74.125.235.20 Google server
-    server.sin_family = AF_INET;
-    server.sin_port = htons(80);
-    printf("Given IP: %s \n",&targetIP[0]);
-
-    */
-
-
-
-
-/*
-//listenfd = socket(AF_INET, SOCK_STREAM, 0); //AF_INET IPv4, SOCK_STREAM(TCP), 0 - Protocol
-    long rc;
-    // Connect to a remote server
-    if(rc = connect(sock, (struct sockadrr*)&server, sizeof(server)), 0)
-    {
-        puts("connect error");
-        return 1;
-    }
-    printf("rc: %d \n",rc);
-    if(rc==SOCKET_ERROR) // SOCKET_ERROR = -1; SUCCEED = 0;
-    {
-        printf("Fehler: connect gescheitert, fehler code: %d\n",WSAGetLastError());
-        if(WSAGetLastError() == 10060) {
-            printf("Connection Timeout\n");
-        }
-        if(WSAGetLastError() == 10061) {
-            printf("Connection refused - Firewall?\n");
-        }
-        printf("%s",WSAGetLastError());
-        return 1;
-    }
-
-    char server_reply[2000], server_send[1000];
-    int recv_size;
-
-    server_send[0] = "wrwarwrw";
-    rc = send(sock , server_send, (int)strlen(server_send),0);
-    printf("rc: %d",rc);
-    printf ("WSAError: %s",WSAGetLastError());
-
-    if((recv_size = recv(sock , server_reply , 2000 , 0)) == SOCKET_ERROR)
-    {
-        puts("recv failed \n");
-    }
-
-    puts("Server reply: %s",server_reply);
-
-
-
-
-    //Receive a reply from the server
-
-
-
-    //rc = send(sock,)
-
-    printf("Verbunden mit IP: %s \n",targetIP[0]);
-    /*
-    closesocket(sock);
-    WSACleanup();
-    */
-    /*
-    printf("Bitte was zum Uebertragen eingeben: ");
-    scanf(" %s",&buffer); // Message die übersendet wird.
-    printf("Message ist: %s \n", buffer);
-    int debugSend = SendMessageToClient(sock, buffer);
-    printf("N: %d \n", debugSend);
-
-   // int debugRead = ReadMessage(sock, buffer_reply);
-
-     */
-
-
-
-
-
-
-
-}
-
-void CreateTCPSocket() {
-
-
-
-
-
-
-
 
 }
 
