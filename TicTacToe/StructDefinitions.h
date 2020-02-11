@@ -5,7 +5,7 @@
 #ifndef TICTACTOE_STRUCTDEFINITIONS_H
 #define TICTACTOE_STRUCTDEFINITIONS_H
 
-#define SPIELFELDGROESSE 3
+//#define SPIELFELDGROESSE 3
 
 typedef struct {
     int x;
@@ -16,7 +16,10 @@ typedef struct {
 typedef struct {
     char zeichen;
     char name[10];
+    int type;
 }SPIELER;
+
+#define CELLPLACEHOLDER '_'
 
 #define FELD_SIZE 3;
 

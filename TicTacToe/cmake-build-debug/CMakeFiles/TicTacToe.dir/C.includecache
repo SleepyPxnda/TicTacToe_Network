@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ComputerLogic.c
+stdlib.h
+-
+time.h
+-
+ComputerLogic.h
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ComputerLogic.h
+StructDefinitions.h
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
+
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/ComputerLogic.h
+StructDefinitions.h
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
+
+/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/StructDefinitions.h
+
