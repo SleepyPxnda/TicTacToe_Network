@@ -137,21 +137,12 @@ int GetHosttype() {
             sock = socket(AF_INET, SOCK_STREAM, 0); // Unsicher, ob überhaupt benötigt
         }
 
-        //weise IP & Port zu
-// server.sin_addr.s_addr = inet_addr(OwnIP[0]);
+
         server.sin_addr.s_addr = htonl(INADDR_ANY); //74.125.235.20 Google server
         server.sin_family = AF_INET;
         server.sin_port = htons(8080);
         printf("Given IP: %s \n",&OwnIP[0]);
-        // Brauche ich das ???
-        /*
-        cli.sin_addr.s_addr = inet_addr(&targetIP[0]);
-        cli.sin_family = AF_INET;
-        cli.sin_port = htons(80);
-        printf("Target IP: %s \n",&targetIP[0]);
-         */
 
-        //Beginne Socket Bind...
 
         if((bind(sock,(struct sockaddr*)&server, sizeof(server))) != 0) {
             printf("Socket konnte nicht gebunden werden \n");
@@ -166,17 +157,7 @@ int GetHosttype() {
             len = sizeof(client);
         }
 
-        /*
-        pthread_t thread;
-        int err;
 
-        err = pthread_create(&thread, NULL, wait, NULL);
-
-        pthread_join(thread, NULL);
-        */
-        //SOCKET PartnerSocket;
-        //connfd  = accept(sock,(struct sockaddr*) &client,&len);
-        // Ermögliche das Empfangen von Daten vom
 
 
 
