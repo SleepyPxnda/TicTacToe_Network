@@ -25,7 +25,7 @@
 //#pragma comment(lib,"WS2_32")//Winsock Library, die für Funktionen der winsock2.h notwending ist.
 
 char hosttyp = ' ';
-char DataToMe[8] = "Moin";
+char DataToMe[64] = "Moin";
 char targetIP[256];
 char OwnIP[256];
 int Verbindung = 1;
@@ -38,16 +38,19 @@ int GetOtherSocket() {
     return ClientSocket;
 }
 
-int SendMessageToClient(int socketfd, char *message){
+int SendMessageToClient(int socket, char *message){
 
     int n = 0; // Debug
-    n = send(socketfd,message,(strlen(message)+1),0); //Wieso übergebe ich hier ein CHAR
+    n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
+    if(n==SOCKET_ERROR) {
+        printf("Send failed %d\n", WSAGetLastError());
+    }
     if(n<0) {
         printf("Error sending to Server");
     } else if ( n == 0 ) {printf("Server closed the Connection.\n");}
 
     printf("message: %s \n", message);
-    return n;
+    //return n;
 
 
 }
@@ -55,13 +58,11 @@ int SendMessageToClient(int socketfd, char *message){
 int ReadMessage(int socket, char * DataToMe) {
     int i, recv_size;
 
-    // recv wartet bis andere Client daten zurücksendet
-    printf("t");
-    if ((recv_size = recv(socket , DataToMe , 7 , 0)) == SOCKET_ERROR) {
-        puts("recv failed \n");
-    } else {puts("recv success \n");}
-    puts(DataToMe);
-
+    recv_size = recv(socket, DataToMe,65,0);
+    if(recv_size > 0 ) {
+        printf("habe empfangen - ");
+        printf("message: %s \n", DataToMe);
+    }
 }
 
 DWORD WINAPI ThreadFunc(void* data) {
@@ -70,8 +71,8 @@ DWORD WINAPI ThreadFunc(void* data) {
     printf("thread meldet sich! \n");
     while(Verbindung == 1) {
         Sleep(500);
-        ReadMessage(0,DataToMe);
-        printf("ich lese...\n");
+        ReadMessage(ClientSocket,DataToMe);
+        //printf("ich lese...\n");
     }
 
 
@@ -80,12 +81,6 @@ DWORD WINAPI ThreadFunc(void* data) {
 
 
 int GetHosttype() {
-
-    /* TODO
-     * 1. Abfrage ob Host oder Client
-     * 2. Winsock initialisierung (Nur auf WINDOWS GERÄTEN)
-     */
-
 
     WSADATA wsa; // enthält Information für Socket implementation
     SOCKET sock;
@@ -106,27 +101,10 @@ int GetHosttype() {
         scanf(" %c", &Ceingabe);
         } while(Ceingabe =='n');
 
-
-    // zum Testen, zwei Sockel anlegen und entweder als H oder C
-
     if(hosttyp == 'H') {
 
-        //Felix IP ist 192.168.137.23
-        /*
-         * socket bind
-         * listen
-         * accept
-         * recv / read
-         * write / send
-         * recv / read
-         * close
-         */
+        printf("\nInitialising Winsock...");  // Socket wird aufgebaut...
 
-        int len,connfd; // Client nummer?
-
-
-        printf("\nInitialising Winsock...");
-        // Socket wird aufgebaut...
         if ( WSAStartup(MAKEWORD(2,2),&wsa) != 0)
         {
             printf("Failed. Error Code : %d", WSAGetLastError());
@@ -144,12 +122,9 @@ int GetHosttype() {
             sock = socket(AF_INET, SOCK_STREAM, 0); // Unsicher, ob überhaupt benötigt
         }
 
-
-        server.sin_addr.s_addr = htonl(INADDR_ANY); //74.125.235.20 Google server
+        server.sin_addr.s_addr = htonl(INADDR_ANY); // INADDR_ANY Server-side
         server.sin_family = AF_INET;
         server.sin_port = htons(8080);
-        printf("Given IP: %s \n",&OwnIP[0]);
-
 
         if((bind(sock,(struct sockaddr*)&server, sizeof(server))) != 0) {
             printf("Socket konnte nicht gebunden werden \n");
@@ -157,11 +132,10 @@ int GetHosttype() {
 
         printf("Server listening und verification wird initialisiert...\n");
 
-        if((listen(sock,50)) != 0) {
+        if((listen(sock,5)) != 0) {
             printf("Listening fehlgeschlagen\n");
         } else {
             printf("Server hoert dich und ist bereit!\n");
-            len = sizeof(client);
         }
 
 
@@ -178,9 +152,7 @@ int GetHosttype() {
             }
         }
 
-        connfd = ClientSocket;
-
-                if(connfd < 0 ){
+                if(ClientSocket < 0 ){
                     printf("Server akzeptiert Client nicht\n");
                 } else {
                     printf ("Server akzeptiert Client\n");
@@ -192,17 +164,11 @@ int GetHosttype() {
 
 
 
-    } else {
-        /*
-         * socket server bind
-         * connect
-         * write / send
-         * recv / read
-         * close
-         */
+    } else{
 
-        printf("\nInitialising Winsock...");
-        // Socket wird aufgebaut...
+
+        printf("\nInitialising Winsock..."); // Socket wird aufgebaut...
+
         if ( WSAStartup(MAKEWORD(2,2),&wsa) != 0)
         {
             printf("Failed. Error Code : %d",WSAGetLastError());
@@ -211,7 +177,7 @@ int GetHosttype() {
             printf("socket retrieve success\n");
         }
 
-        if((sock = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
+        if((ClientSocket = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
         {
             printf("Konnte Socket nicht erstellen: : %d \n" , WSAGetLastError());
             return -1;
@@ -225,7 +191,7 @@ int GetHosttype() {
         printf("Trying to connect...");
 
         // connect the client socket to server socket
-        if (connect(sock, (struct sockaddr*)&server, sizeof(server)) != 0) {
+        if (connect(ClientSocket, (struct sockaddr*)&server, sizeof(server)) != 0) {
             printf("connection with the server failed...\n");
             exit(0);
         }
@@ -240,6 +206,13 @@ int GetHosttype() {
         Sleep(2000);
         printf("Thread ist erfolgreich gestartet.\n");
         CloseHandle(thread);
+    }
+
+    while(1) {
+
+
+
+        Sleep(500);
     }
 
 }
