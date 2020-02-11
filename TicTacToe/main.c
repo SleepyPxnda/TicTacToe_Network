@@ -12,7 +12,9 @@ int main() {
     SPIELER Spieler1;
     SPIELER Spieler2;
 
-    GetHosttype();
+
+
+    int networkcheck = GetHosttype();
 
     printf("Spieler 1: ");
     scanf("%s", &Spieler1.name);
