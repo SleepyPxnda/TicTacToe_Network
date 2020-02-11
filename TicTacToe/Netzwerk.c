@@ -3,19 +3,23 @@
 // Created by A002485 on 04.02.2020.
 //
 
+//Initialisiere Winsock ( Socket programming bei windows )
+#include <winsock2.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <string.h>
-//Initialisiere Winsock ( Socket programming bei windows )
-#include<winsock2.h>
+#include <pthread.h>
+#include <unistd.h>
+
+
 
 //für TCP hinzugefügt - was macht das??
 //#include&lt;stdio.h&gt;
 //#include&lt;winsock2.h&gt;
 
-#pragma comment(lib,"ws2_32.lib")//Winsock Library, die für Funktionen der winsock2.h notwending ist.
+//#pragma comment(lib,"WS2_32")//Winsock Library, die für Funktionen der winsock2.h notwending ist.
 
 char hosttyp = ' ';
 int ippart1,ippart2,ippart3,ippart4;
@@ -70,8 +74,9 @@ int GetHosttype() {
 
     WSADATA wsa; // enthält Information für Socket implementation
     SOCKET sock;
-    struct sockaddr_in server, cli;
+    struct sockaddr_in server, client;
     char Ceingabe = 'n';
+    WSACleanup();
 
     printf("Sind Sie Host oder Client? [H] [C]. \n");
     scanf(" %c", &hosttyp);
@@ -117,7 +122,7 @@ int GetHosttype() {
         // Socket wird aufgebaut...
         if ( WSAStartup(MAKEWORD(2,2),&wsa) != 0)
         {
-            printf("Failed. Error Code : %d",WSAGetLastError());
+            printf("Failed. Error Code : %d", WSAGetLastError());
             return 1;
         } else {
             printf("socket retrieve success\n");
@@ -136,7 +141,7 @@ int GetHosttype() {
 // server.sin_addr.s_addr = inet_addr(OwnIP[0]);
         server.sin_addr.s_addr = htonl(INADDR_ANY); //74.125.235.20 Google server
         server.sin_family = AF_INET;
-        server.sin_port = htons(80);
+        server.sin_port = htons(8080);
         printf("Given IP: %s \n",&OwnIP[0]);
         // Brauche ich das ???
         /*
@@ -148,24 +153,55 @@ int GetHosttype() {
 
         //Beginne Socket Bind...
 
-        if((bind(sock,(struct sockadrr*)&server, sizeof(server))) != 0) {
+        if((bind(sock,(struct sockaddr*)&server, sizeof(server))) != 0) {
             printf("Socket konnte nicht gebunden werden \n");
         } else printf("Socket wurde an Server gebunden\n");
 
         printf("Server listening und verification wird initialisiert...\n");
 
-        if((listen(sock,5)) != 0) {
+        if((listen(sock,50)) != 0) {
             printf("Listening fehlgeschlagen\n");
         } else {
             printf("Server hoert dich und ist bereit!\n");
-            len = sizeof(cli);
+            len = sizeof(client);
         }
 
-        // Ermögliche das Empfangen von Daten vom CLienten
+        /*
+        pthread_t thread;
+        int err;
 
-        printf("Akzeptiere einkommende Anfragen von Partner...");
+        err = pthread_create(&thread, NULL, wait, NULL);
 
-        connfd = accept(sock, (struct sockadrr*)&cli, &len);
+        pthread_join(thread, NULL);
+        */
+        //SOCKET PartnerSocket;
+        //connfd  = accept(sock,(struct sockaddr*) &client,&len);
+        // Ermögliche das Empfangen von Daten vom
+
+
+
+        SOCKET ClientSocket;
+        ClientSocket = INVALID_SOCKET;
+
+        while(ClientSocket == INVALID_SOCKET) {
+            ClientSocket = INVALID_SOCKET;
+            printf("test");
+            ClientSocket = accept(sock, NULL, NULL);
+            if (ClientSocket == INVALID_SOCKET) {
+                printf("accept failed with error %d\n", WSAGetLastError());
+                //closesocket(sock);
+                //WSACleanup;
+
+            }
+        }
+
+
+
+
+        printf("Akzeptiere einkommende Anfragen von Partner...\n");
+
+
+         //connfd = accept(sock, (struct sockaddr*)&cli, &len);
                 if(connfd < 0 ){
                     printf("Server akzeptiert Client nicht\n");
                 } else {
@@ -205,11 +241,13 @@ int GetHosttype() {
         //Dennis Server IP: 141.31.83.34
         server.sin_addr.s_addr = inet_addr(&targetIP[0]); //127.0.0.1 wäre local
         server.sin_family = AF_INET;
-        server.sin_port = htons(80);
+        server.sin_port = htons(8080);
         printf("Given IP: %s \n",&targetIP[0]);
 
+        printf("Trying to connect...");
+
         // connect the client socket to server socket
-        if (connect(sock, (struct sockadrr*)&server, sizeof(server)) != 0) {
+        if (connect(sock, (struct sockaddr*)&server, sizeof(server)) != 0) {
             printf("connection with the server failed...\n");
             exit(0);
         }
@@ -219,7 +257,7 @@ int GetHosttype() {
         //ConnectToServer();
     }
 
-    close(sock);
+    //closesocket(sock);
 
     /*
    * Creating TCP socket
