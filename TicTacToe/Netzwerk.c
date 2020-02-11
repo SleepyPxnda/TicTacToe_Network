@@ -26,6 +26,7 @@
 
 char hosttyp = ' ';
 char DataToMe[64] = "Moin";
+char DataToHim[64] = "-";
 char targetIP[256];
 char OwnIP[256];
 int Verbindung = 1;
@@ -209,8 +210,10 @@ int GetHosttype() {
     }
 
     while(1) {
+        DataToHim[0] = '\0';
+        scanf(" %s",&DataToHim);
 
-
+        SendMessageToClient(GetOtherSocket(),DataToHim);
 
         Sleep(500);
     }
