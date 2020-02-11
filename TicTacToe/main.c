@@ -12,6 +12,10 @@ int main() {
     SPIELER Spieler1;
     SPIELER Spieler2;
 
+
+
+    int networkcheck = GetHosttype();
+
     printf("Spieleinstellungen\n");
     printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
     scanf("%d", &SPIELFELDGROESSE);
