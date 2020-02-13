@@ -1,3 +1,0 @@
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/cmake-build-debug/CMakeFiles/TicTacToe.dir
-/cygdrive/c/Users/dam/Documents/GitHub/TicTacToe_Network/TicTacToe/cmake-build-debug/CMakeFiles/edit_cache.dir
