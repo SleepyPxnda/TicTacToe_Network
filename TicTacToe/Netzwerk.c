@@ -33,9 +33,13 @@ int Verbindung = 1;
 char string_1[20];
 char string_2[20];
 SOCKET ClientSocket = INVALID_SOCKET;
-int ReadMessage(int socket, char * DataToMe);
+int ReadMessage(int socket, char * DataToMe, int modus);
 int SendMessageToClient(int socket, char *message, char *intarray);
 int messageStatus = 0;
+int modus = 0;
+int checkMessage;
+char *GetMessages(int a);
+
 
 
 
@@ -46,7 +50,11 @@ int GetOtherSocket() {
     return ClientSocket;
 }
 
+ChangeModus(int a) {
 
+    modus = a;
+
+}
 
 DWORD WINAPI ThreadFunc(void* data) {
     // Do stuff.  This will be the first function called on the new thread.
@@ -54,7 +62,7 @@ DWORD WINAPI ThreadFunc(void* data) {
     printf("thread meldet sich! \n");
     while(Verbindung == 1) {
         Sleep(500);
-        ReadMessage(ClientSocket,DataToMe);
+        ReadMessage(ClientSocket,DataToMe,modus);
         //printf("ich lese...\n");
     }
 
@@ -267,15 +275,12 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
 }
 
-int ReadMessage(int socket, char * DataToMe) {
+int ReadMessage(int socket, char * DataToMe, int modus) {
     int a,b, recv_size;
     char tempstring[60];
 
     recv_size = recv(socket, DataToMe,65,0); // 1. Auswertung sind immer die beiden Integer
     if(recv_size > 0 ) {
-        if(DataToMe == "aaa") {
-            // Führe thread sleep aus für main() z.B. warte auf Server...
-        }
         if(DataToMe == "bbb") {
             //erneute Eingabe von Name,Zeichen
         }
@@ -313,14 +318,46 @@ int ReadMessage(int socket, char * DataToMe) {
             printf("HABE BEKOMMEN : String2: %s \n",string_2);
             DataToMe[0] = '/0';
             messageStatus = 0;
+
+            checkMessage = 1;
+
         }
     }
+
+    if(modus == 1) {
+
+
+
+    }
+
     DataToMe[0] = '/0';
     memset(DataToMe,0,strlen(DataToMe));
 
 
 
 }
+
+char *GetMessages(int a) {
+
+
+
+    if(a == 1) {
+
+        char* arr = malloc(100);
+        strcpy(arr,string_1);
+        return arr;
+
+    }
+
+    if(a == 2) {
+
+        char* arr = malloc(100);
+        strcpy(arr,string_2);
+        return arr;
+
+    }
+}
+
 
 
 

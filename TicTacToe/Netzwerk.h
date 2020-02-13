@@ -9,5 +9,12 @@
 int GetHosttype();
 int ThreadErstellen(int erkennung);
 int SendenBrauchbar(char *Datenpaket, int string1, int string2);
+//ChangeModus(int a);
+char *GetMessages(int a);
+
+
+int checkMessage;
+char string_1[20];
+char string_2[20];
 
 #endif //TICTACTOE_NETZWERK_H
