@@ -43,7 +43,7 @@ int main() {
 
         if (networkcheck == 0) {
             //Server
-
+/*
             printf("------------------\n");
             printf("Spielereinstellungen\n");
             //Spieler 1
@@ -54,7 +54,7 @@ int main() {
             printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler1.name, Spieler1.zeichen, Spieler1.type);
             printf("------------------\n");
             printf("Frage Daten vom Clienten ab...");
-
+*/
 
 
 

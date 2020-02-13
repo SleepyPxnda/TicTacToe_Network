@@ -34,7 +34,7 @@ char string_1[20];
 char string_2[20];
 SOCKET ClientSocket = INVALID_SOCKET;
 int ReadMessage(int socket, char * DataToMe);
-int SendMessageToClient(int socket, char *message, int *intarray);
+int SendMessageToClient(int socket, char *message, char *intarray);
 int messageStatus = 0;
 
 
@@ -228,7 +228,7 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
     printf("%s \n",string_2); */
     //scanf(" %s",&DataToHim);
 
-    int stringlength[] = { string1length, string2length};
+    char stringlength[] = { string1length, string2length};
 
 
 
@@ -248,11 +248,11 @@ int SendenChat() {
 
 }
 
-int SendMessageToClient(int socket, char *message, int *intarray){
+int SendMessageToClient(int socket, char *message, char *intarray){
 
     int n = 0; // Debug
     n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
-    Sleep(200);
+    Sleep(1000);
     n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
     if(n==SOCKET_ERROR) {
         printf("Send failed %d\n", WSAGetLastError());
@@ -269,24 +269,43 @@ int SendMessageToClient(int socket, char *message, int *intarray){
 
 int ReadMessage(int socket, char * DataToMe) {
     int a,b, recv_size;
+    char tempstring[60];
 
     recv_size = recv(socket, DataToMe,65,0); // 1. Auswertung sind immer die beiden Integer
     if(recv_size > 0 ) {
+        if(DataToMe == "aaa") {
+            // Führe thread sleep aus für main() z.B. warte auf Server...
+        }
+        if(DataToMe == "bbb") {
+            //erneute Eingabe von Name,Zeichen
+        }
+        if(DataToMe == "ccc") {
+            // Geb Random Zahl vom Server
+        }
+        if(DataToMe == "ddd") {
+            //Spielfeldgröße als paket zu geschickt bekommen
+        }
+        if(DataToMe == "eee") {
+            // Dein Gegner hat feld xy belegt (aktualisiert auch auf deiner Seite)
+        }
         if(messageStatus == 0) {
             printf("habe empfangen - ");
-             a = (int) DataToMe[0];
-             b = (int) DataToMe[1];
-            DataToMe[0] = '/0';
+            //DataToMe[0] = '/0';
             printf("message: %s \n", DataToMe);
+            strcpy(tempstring,DataToMe);
             messageStatus = 1;
             printf("Warte jetzt auf den String...\n");
-        }
-        if(messageStatus == 1) {
+        }else if(messageStatus == 1) {
             printf("String bekommen!\n");
 
-            strcpy(string_1,DataToMe); // ich nehme mein string_1 array und kopiere den inhalt da rein
+            a = (int) DataToMe[0];
+            b = (int) DataToMe[1];
+
+            printf("a: %d, b: %d \n",a,b);
+
+            strcpy(string_1,tempstring); // ich nehme mein string_1 array und kopiere den inhalt da rein
             string_1[a] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
-            strcpy(string_2,DataToMe);
+            strcpy(string_2,tempstring);
             string_2[0] = string_2[a];
             string_2[b] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
 
@@ -296,7 +315,8 @@ int ReadMessage(int socket, char * DataToMe) {
             messageStatus = 0;
         }
     }
-
+    DataToMe[0] = '/0';
+    memset(DataToMe,0,strlen(DataToMe));
 
 
 
