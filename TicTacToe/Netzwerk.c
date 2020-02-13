@@ -12,7 +12,7 @@
 #include <string.h>
 #include <windows.h>
 #include <tchar.h>
-#include <strsafe.h>
+//#include <strsafe.h>
 
 #define MAX_THREADS 3
 #define BUF_SIZE 255
@@ -30,7 +30,14 @@ char DataToHim[64] = "-";
 char targetIP[256];
 char OwnIP[256];
 int Verbindung = 1;
+char string_1[20];
+char string_2[20];
 SOCKET ClientSocket = INVALID_SOCKET;
+int ReadMessage(int socket, char * DataToMe);
+int SendMessageToClient(int socket, char *message, int *intarray);
+int messageStatus = 0;
+
+
 
 
 // IPv4 AF_INET sockets:
@@ -39,32 +46,7 @@ int GetOtherSocket() {
     return ClientSocket;
 }
 
-int SendMessageToClient(int socket, char *message){
 
-    int n = 0; // Debug
-    n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
-    if(n==SOCKET_ERROR) {
-        printf("Send failed %d\n", WSAGetLastError());
-    }
-    if(n<0) {
-        printf("Error sending to Server");
-    } else if ( n == 0 ) {printf("Server closed the Connection.\n");}
-
-    printf("message: %s \n", message);
-    //return n;
-
-
-}
-
-int ReadMessage(int socket, char * DataToMe) {
-    int i, recv_size;
-
-    recv_size = recv(socket, DataToMe,65,0);
-    if(recv_size > 0 ) {
-        printf("habe empfangen - ");
-        printf("message: %s \n", DataToMe);
-    }
-}
 
 DWORD WINAPI ThreadFunc(void* data) {
     // Do stuff.  This will be the first function called on the new thread.
@@ -93,14 +75,17 @@ int GetHosttype() {
     scanf(" %c", &hosttyp);
     printf("Willkommen %c \n",hosttyp);
 
-    do {
-        printf("Mit wem wollen sie sich verbinden?\n");
-        printf("Bitte geben sie die IP Adresse des Partners an. \n");
-        printf("Format ist: XXX.XXX.XXX.XXX \n");
-        scanf(" %s", &targetIP);
-        printf("Ist %s richtig? ###[y] [n]### \n", targetIP);
-        scanf(" %c", &Ceingabe);
-        } while(Ceingabe =='n');
+    if(hosttyp == 'C') {
+
+        do {
+            printf("Mit wem wollen sie sich verbinden?\n");
+            printf("Bitte geben sie die IP Adresse des Partners an. \n");
+            printf("Format ist: XXX.XXX.XXX.XXX \n");
+            scanf(" %s", &targetIP);
+            printf("Ist %s richtig? ###[y] [n]### \n", targetIP);
+            scanf(" %c", &Ceingabe);
+        } while (Ceingabe == 'n');
+    }
 
     if(hosttyp == 'H') {
 
@@ -153,19 +138,15 @@ int GetHosttype() {
             }
         }
 
-                if(ClientSocket < 0 ){
-                    printf("Server akzeptiert Client nicht\n");
-                } else {
-                    printf ("Server akzeptiert Client\n");
-                }
+        if(ClientSocket < 0 ){
+            printf("Server akzeptiert Client nicht\n");
+        } else {
+            printf ("Server akzeptiert Client\n");
+        }
 
+        return 0;
 
-       // SendMessageToClient(ClientSocket,DataToHim);
-
-
-
-
-    } else{
+    } else { // Client
 
 
         printf("\nInitialising Winsock..."); // Socket wird aufgebaut...
@@ -198,29 +179,128 @@ int GetHosttype() {
         }
         else
             printf("VERBUNDEN\n");
+
+        return 1;
     }
+
+
+
+}
+
+int ThreadErstellen(int erkennung) {
 
     HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);
     if (thread) {
         // Optionally do stuff, such as wait on the thread.
         printf("Thread wird gestartet...\n");
-        Sleep(2000);
+        Sleep(500);
         printf("Thread ist erfolgreich gestartet.\n");
         CloseHandle(thread);
     }
-
-    while(1) {
-        DataToHim[0] = '\0';
-        scanf(" %s",&DataToHim);
-
-        SendMessageToClient(GetOtherSocket(),DataToHim);
-
-        Sleep(500);
-    }
+    return 1;
 
 }
 
+int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
 
+    // Empfange array, nehme das außeinander mit den jeweiligen größen, habe arrays hier initialisiert, die einfach nach dem 6. char \n setzen und beim anderen
+    /*
+     * Empfange array, size 1. block, size 2. block
+     * nehme array von stelle 0 bis size 1 und kopiere das in ein anderes array, das setzt bei size1+1 ein \0
+     *
+     */
+   // printf(" %s",Datenpaket);
+    strcpy(string_1,Datenpaket); // ich nehme mein string_1 array und kopiere den inhalt da rein
+    string_1[string1length] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
+    strcpy(string_2,Datenpaket);
+    string_2[0] = string_2[string1length];
+    string_2[string2length] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
+
+    printf("String1: %s \n",string_1);
+    printf("String2: %s \n",string_2);
+
+    // Schicke erst das array mit den Integern,
+    // Schicke dann die Strings
+
+   /* char string_1[6] = Datenpaket[0];
+    printf("%s \n",string_1);
+    char string_2[1] = Datenpaket[string1];
+    printf("%s \n",string_2); */
+    //scanf(" %s",&DataToHim);
+
+    int stringlength[] = { string1length, string2length};
+
+
+
+    SendMessageToClient(GetOtherSocket(),Datenpaket,stringlength); // Sendet zum Clienten oder Server
+
+    Sleep(500);
+}
+
+int SendenChat() {
+
+    DataToHim[0] = '\0';
+    scanf(" %s",&DataToHim);
+
+    //SendMessageToClient(GetOtherSocket(),DataToHim); // Sendet zum Clienten oder Server
+
+    Sleep(500);
+
+}
+
+int SendMessageToClient(int socket, char *message, int *intarray){
+
+    int n = 0; // Debug
+    n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
+    Sleep(200);
+    n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
+    if(n==SOCKET_ERROR) {
+        printf("Send failed %d\n", WSAGetLastError());
+    }
+    if(n<0) {
+        printf("Error sending to Server");
+    } else if ( n == 0 ) {printf("Server closed the Connection.\n");}
+
+    printf("message: %s \n", message);
+    //return n;
+
+
+}
+
+int ReadMessage(int socket, char * DataToMe) {
+    int a,b, recv_size;
+
+    recv_size = recv(socket, DataToMe,65,0); // 1. Auswertung sind immer die beiden Integer
+    if(recv_size > 0 ) {
+        if(messageStatus == 0) {
+            printf("habe empfangen - ");
+             a = (int) DataToMe[0];
+             b = (int) DataToMe[1];
+            DataToMe[0] = '/0';
+            printf("message: %s \n", DataToMe);
+            messageStatus = 1;
+            printf("Warte jetzt auf den String...\n");
+        }
+        if(messageStatus == 1) {
+            printf("String bekommen!\n");
+
+            strcpy(string_1,DataToMe); // ich nehme mein string_1 array und kopiere den inhalt da rein
+            string_1[a] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
+            strcpy(string_2,DataToMe);
+            string_2[0] = string_2[a];
+            string_2[b] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
+
+            printf("HABE BEKOMMEN : String1: %s \n",string_1);
+            printf("HABE BEKOMMEN : String2: %s \n",string_2);
+            DataToMe[0] = '/0';
+            messageStatus = 0;
+        }
+    }
+
+
+
+
+}
 
 
 

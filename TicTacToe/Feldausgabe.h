@@ -9,7 +9,7 @@
 
 extern int SPIELFELDGROESSE;
 
-void drawTicTacToeField(KOORDINATE Feld[][SPIELFELDGROESSE]);
+void drawTicTacToeField(KOORDINATE Feld[] [SPIELFELDGROESSE]);
 
 
 #endif //TICTACTOE_FELDAUSGABE_H
