@@ -1,1 +1,0 @@
-/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/TicTacToe.dir/main.c.o CMakeFiles/TicTacToe.dir/Feldausgabe.c.o CMakeFiles/TicTacToe.dir/Logik.c.o CMakeFiles/TicTacToe.dir/ComputerLogic.c.o  -o TicTacToe.exe -Wl,--out-implib,libTicTacToe.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
