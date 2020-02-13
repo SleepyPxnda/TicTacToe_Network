@@ -32,14 +32,14 @@ int setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORD
 
 int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 
+
     //Horizontal Check for Win
     for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
         int rowCellEquals = 0;
-        for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
+        for(int spalte = 0; spalte < SPIELFELDGROESSE - 1; spalte++){ //Keine Ahnung wieso, aber sonst klappt der Hori Wincheck nicht
             if(Feld[reihe][spalte].value != CELLPLACEHOLDER) {
                 if (Feld[reihe][spalte].value == Feld[reihe][spalte + 1].value) {
                     rowCellEquals += 1;
-
                 }
             }
         }
@@ -60,7 +60,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
                 }
         }
         if(rowCellEquals == SPIELFELDGROESSE - 1){
-            return 1;
+            return 2;
         }
     }
 
@@ -74,7 +74,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         }
     }
     if(rowCellsEqualsUp == SPIELFELDGROESSE - 1){
-        return 1;
+        return 3;
     }
 
     //Anti Diagonal Check for Win
@@ -92,12 +92,11 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         diagonalspalte++;
     }
     if(rowCellsEqualsDown == SPIELFELDGROESSE - 1){   // Abfrage für Spieler
-        return 1;
+        return 4;
     }
     if(rowCellsEqualsDown == SPIELFELDGROESSE){       // Abfrage für Computer, weil andere Koordinateneinheit FIX?
-        return 1;
+        return 4;
     }
-
     int maxCells = 0;
     for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
         for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
@@ -107,8 +106,9 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         }
     }
     if(maxCells == SPIELFELDGROESSE * SPIELFELDGROESSE){
-        return 2;
+        return 5;
     }
+
     return 0;
 }
 
