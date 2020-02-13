@@ -81,7 +81,7 @@ int main() {
         system("clear");
     }
 
-    if(gewinnerValue == 2){
+    if(gewinnerValue == 5){
         printf("Das Feld ist voll, Unentschieden\n");
         return 1;
     }
