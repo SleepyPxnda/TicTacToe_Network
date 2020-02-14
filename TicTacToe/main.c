@@ -146,7 +146,7 @@ int main() {
 
                 //char string1[32] = GetMessages(1);
                // char string2[32] = GetMessages(2);
-
+            /*
                 while (checkMessage == 1) {
 
                     printf("bin in sperre");
@@ -178,7 +178,7 @@ int main() {
 
 
                 }
-
+            */
             /*
             do {
 
