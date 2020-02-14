@@ -16,5 +16,6 @@ char *GetMessages(int a);
 int checkMessage;
 char string_1[20];
 char string_2[20];
+int aktivListen;
 
 #endif //TICTACTOE_NETZWERK_H

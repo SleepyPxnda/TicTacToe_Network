@@ -35,6 +35,7 @@ char string_2[20];
 SOCKET ClientSocket = INVALID_SOCKET;
 int ReadMessage(int socket, char * DataToMe, int modus);
 int SendMessageToClient(int socket, char *message, char *intarray);
+int aktivListen = 0;
 int messageStatus = 0;
 int modus = 0;
 int checkMessage = 0;
@@ -60,7 +61,7 @@ DWORD WINAPI ThreadFunc(void* data) {
     // Do stuff.  This will be the first function called on the new thread.
     // When this function returns, the thread goes away.  See MSDN for more details.
     printf("thread meldet sich! \n");
-    while(Verbindung == 1) {
+    while(aktivListen == 1) {
         Sleep(500);
         ReadMessage(ClientSocket,DataToMe,modus);
         //printf("ich lese...\n");

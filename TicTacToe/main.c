@@ -102,6 +102,7 @@ int main() {
 
             printf("Hallo Spieler 2! \n");
             printf("Warte auf Spielereingabe von Spieler 1...\n");
+            aktivListen = 1;
 
             //wenn Spieler 1 fertig ist, wird ein Paket mit verschickt, mit Name und Zeichen
             //Wenn bekommen, also CheckMessage == 1, dann eigene Eingabe machen und prüfen ob die sich überlappen.
@@ -110,6 +111,7 @@ int main() {
             while(checkMessage == 0) {} // warten...
 
             checkMessage = 1;
+            aktivListen = 0;
 
             do {
             printf("------------------\n");
