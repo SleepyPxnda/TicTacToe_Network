@@ -268,7 +268,7 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
     int n = 0; // Debug
     n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
-    Sleep(1000);
+    Sleep(2000);
     n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
     if(n==SOCKET_ERROR) {
         printf("Send failed %d\n", WSAGetLastError());
@@ -332,7 +332,7 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
 
             printf("HABE BEKOMMEN : String1: %s \n",string_1);
             printf("HABE BEKOMMEN : String2: %s \n",string_2);
-            DataToMe[0] = '/0';
+            DataToMe[0] = '\0';
 
             messageStatus = 0;
             a = 0;
