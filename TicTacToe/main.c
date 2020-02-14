@@ -178,8 +178,8 @@ int main() {
 
 
                 }
-            }
 
+            /*
             do {
 
                 printf("------------------\n");
@@ -215,7 +215,7 @@ int main() {
             //
 
 
-
+        */
         } else if (networkcheck == -1) {
             printf("Netzwerkfehler aufgetreten!");
         }
