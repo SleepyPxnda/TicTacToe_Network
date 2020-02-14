@@ -333,10 +333,7 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             printf("HABE BEKOMMEN : String1: %s \n",string_1);
             printf("HABE BEKOMMEN : String2: %s \n",string_2);
             DataToMe[0] = '\0';
-
             messageStatus = 0;
-            a = 0;
-            b = 0;
 
 
         }

@@ -5,6 +5,8 @@
 #include "StructDefinitions.h"
 #include "ErrorMessages.h"
 #include "ComputerLogic.h"
+#include "Logik.h"
+
 #
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,18 +117,24 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 }
 
 
-void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
+void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode){
     KOORDINATE scanKoord;
 
 
-    if (player.type == 0){
+    if (player.type == 0 && mode == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
         scanf(" %d %d", &scanKoord.x, &scanKoord.y);
-    } else
-        if(player.type == 1){
+
+    } else if(player.type == 1){
             sleep(1);
         scanKoord = getCoordinateForComputer(Feld);
         printf("Der Computer %s hat ein Zeichen an %d , %d gesetzt\n",player.name, scanKoord.x, scanKoord.y);
+    } else if (player.type == 0 && mode == 1){
+
+        scanKoord.x = (int)GetTempstring('x');
+        scanKoord.y = (int)GetTempstring('y');
+
+
     }
 
     scanKoord.value = player.zeichen;
@@ -136,6 +144,7 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE])
         scanf(" %d %d", &scanKoord.x, &scanKoord.y);
     }
 }
+
 
 
 

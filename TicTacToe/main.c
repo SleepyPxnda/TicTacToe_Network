@@ -10,29 +10,19 @@
 int SPIELFELDGROESSE;
 char abfrage = 'n';
 char DatenPaket[64];
-int sperre = 0;
 char Convstring[2] = {'0','\0'};
-int a,b;
-char OOF[10];
+int Spielernummer = 0;
+
+ClientTurn(int Spielernummer);
+ServerTurn(int Spielernummer);
+GiveKoordsToMain(int x, int y);
+char tempstring[3];
+int GetTempstring(char x);
+int ZugEmpfangen = 0;
+
 
 
 int main() {
-
-    sprintf(OOF,"%d",4);
-
-    a = (int) OOF[0];
-    b = (int) OOF[1];
-    printf("----%i---",strlen(OOF));
-    printf("a: %d, b: %d \n",a,b);
-
-    strcpy(string_1,OOF); // ich nehme mein string_1 array und kopiere den inhalt da rein
-   // string_1[a] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
-    strcpy(string_2,OOF);
-    string_2[0] = string_2[a];
-   // string_2[b] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
-
-    printf("HABE BEKOMMEN : String1: %s \n",string_1);
-    printf("HABE BEKOMMEN : String2: %s \n",string_2);
 
     SPIELER Spieler1;
     SPIELER Spieler2;
@@ -62,6 +52,8 @@ int main() {
 
         int networkcheck = GetHosttype();
         int threadDebug = ThreadErstellen(networkcheck);
+        Spieler1.type = 0; //Beides Spieler typen
+        Spieler2.type = 0;
 
         if (networkcheck == 0) {
             //Server
@@ -133,6 +125,7 @@ int main() {
             SendenBrauchbar(DatenPaket,1,1);
 
             printf("Das Spiel beginnt...");
+            Spielernummer = 1;
 
 
 
@@ -173,7 +166,7 @@ int main() {
             scanf("%s", &Spieler2.name);
             printf("Zeichen von %s : ", Spieler2.name);
             scanf(" %c", &Spieler2.zeichen);
-            printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen, Spieler2.type);
+            printf("Spieler 2 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen);
             printf("------------------\n");
             printf("Übermittle Daten...\n");
 
@@ -199,90 +192,86 @@ int main() {
             checkMessage = 0;
             aktivListen = 0;
 
-            SPIELFELDGROESSE = string_1[0];
+
+
+            SPIELFELDGROESSE = atoi(string_1); //String umwandlung in Integer
             printf("Das Spielfeld ist %d groß. \n", SPIELFELDGROESSE);
 
-                //ChangeModus(1); // 1 - ist warte auf Server paket für Name und Spieler
+            Spielernummer = 2;
 
-
-
-                //char string1[32] = GetMessages(1);
-               // char string2[32] = GetMessages(2);
-            /*
-                while (checkMessage == 1) {
-
-                    printf("bin in sperre");
-
-                    char Convstring[2] = {Spieler1.zeichen, '\0'}; // Spieler 1. in String umgewandelt
-
-                    if (string_1 == Spieler1.name ||  string_2[0] == Convstring[0]) {
-
-                        char temp[10] = "not";
-                        strcpy(DatenPaket, temp);
-                        printf("DATENPAKET abgelehnt: %s \n", DatenPaket);
-                        SendenBrauchbar(DatenPaket, strlen(temp),0);
-
-
-
-
-                    } else {
-
-                        sperre = 1;
-                        char temp[10] = "ok";
-                        strcpy(DatenPaket, temp);
-                        printf("DATENPAKET erlaubt: %s \n", DatenPaket);
-                        SendenBrauchbar(DatenPaket, strlen(temp),0);
-
-
-
-
-                    }
-
-
-                }
-            */
-            /*
-            do {
-
-                printf("------------------\n");
-                printf("Spielereinstellungen\n");
-                //Spieler 2
-                printf("Spieler Server: [name] ");
-                scanf("%s", &Spieler2.name);
-                printf("Zeichen von %s : ", Spieler2.name);
-                scanf(" %c", &Spieler2.zeichen);
-                printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen, Spieler2.type);
-                printf("------------------\n");
-                printf("Übermittle Daten...\n");
-
-                //Schickt Datenpaket mit Name und Zeichen
-                char Convstring[2] = {Spieler2.zeichen, '\0'};
-                strcpy(DatenPaket, strcat(Spieler2.name, Convstring));
-
-                printf("DATENPAKET: %s \n", DatenPaket);
-                DatenPaket[strlen(Spieler2.name) + strlen(Convstring) + 1] = '\0';
-
-                SendenBrauchbar(DatenPaket, (int) strlen(Spieler2.name) - 1, (int) strlen(Convstring));
-
-            } while (GetMessages(1) != "ok");
-
-            printf("Spieler2 geschafft!");
-
-          //  SendenBrauchbar(DatenPaket,strlen(Spieler2.name),strlen(Spieler2.zeichen));
-
-            //SendenBrauchbar(DatenPaket,int 1. string, int 2. String, int 3...)
-
-            //Spielername und Zeichen an Server schicken
-            // warte auf Zuweisung
-            //
-
-
-        */
         } else if (networkcheck == -1) {
             printf("Netzwerkfehler aufgetreten!");
         }
 
         KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
+        int gewinnerValue = 0;
+
+        for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++) {
+            for (int reihe = 0; reihe < SPIELFELDGROESSE; reihe++) {
+                Playfield[reihe][spalte].value = CELLPLACEHOLDER;
+            }
+        }
+        system("clear");
+        int counter = 0;
+        while(gewinnerValue == 0){
+
+            ServerTurn(1); //Server ist dran
+            if(ZugEmpfangen == 1) {
+                ZugEmpfangen = 0;
+                tempstring[0] = string_1;
+                tempstring[2] = string_2;
+                doTurn(Spieler1,Playfield,1);
+            } else {doTurn(Spieler1,Playfield,1);}
+
+            drawTicTacToeField(Playfield);
+
+            ClientTurn(2);
+            if(ZugEmpfangen == 1) {
+                ZugEmpfangen = 0;
+                tempstring[0] = string_1;
+                tempstring[2] = string_2;
+                doTurn(Spieler2,Playfield,1);
+            } else {doTurn(Spieler2,Playfield,1);}
+
+            drawTicTacToeField(Playfield);
+/*
+            if(Spielernummer == 2) { //Server ist als erstes am Zug
+                printf("Spieler: %s ist am Zug!",Spieler1.name );
+                aktivListen = 1;
+                while(checkMessage == 0) {Sleep(100);} // warten...
+                checkMessage = 0;
+                aktivListen = 0;
+                //Bekomme paket und speicher es ein.
+
+            }
+            if(Spielernummer == 1) {
+
+                printf("Spieler: %s ist am Zug!",Spieler2.name);
+
+                strcpy(DatenPaket,)
+                SendenBrauchbar(DatenPaket, (int) strlen(Spieler2.name) - 1, (int) strlen(Convstring));
+            }*/
+
+            counter++;
+
+            gewinnerValue = testForWinner(Playfield);
+
+            system("clear");
+        }
+
+        if(gewinnerValue == 2){
+            printf("Das Feld ist voll, Unentschieden\n");
+            return 1;
+        }
+
+        drawTicTacToeField(Playfield);
+
+        if(counter % 2 == 0){
+            printf("%s ist Sieger\n",Spieler2.name);
+        } else {
+            printf("%s ist Sieger\n",Spieler1.name);
+        }
+        return 1;
 
     }
 
@@ -343,10 +332,10 @@ int main() {
         drawTicTacToeField(Playfield);
 
         if(counter % 2 == 0){
-            doTurn(Spieler1,Playfield);
+            doTurn(Spieler1,Playfield,0);
         }
         else {
-            doTurn(Spieler2,Playfield);
+            doTurn(Spieler2,Playfield,0);
         }
         counter++;
 
@@ -368,5 +357,65 @@ int main() {
         printf("%s ist Sieger\n",Spieler1.name);
     }
     return 1;
+}
+
+ClientTurn(int Spielernummer) {
+
+    if(Spielernummer == 2) {
+
+        printf("Spieler: 2 ist am Zug!");
+        printf("Eingabe als 1,1 2,2 usw \n");
+        scanf(" %s", &tempstring);
+        strcpy(DatenPaket,tempstring);
+        SendenBrauchbar(DatenPaket,1,1);
+
+    } else if(Spielernummer == 1){
+
+        printf("Spieler: 2 ist am Zug");
+        aktivListen = 1;
+        while(checkMessage == 0) {Sleep(100);} // warten...
+        checkMessage = 0;
+        aktivListen = 0;
+        ZugEmpfangen = 1;
+
+
+
+
+    }
+
+}
+
+ServerTurn(int Spielernummer) {
+
+    if(Spielernummer == 1) {
+
+        printf("Spieler: 1 ist am Zug!");
+        printf("Eingabe als 1,1 2,2 usw \n");
+        scanf(" %s", &tempstring);
+        strcpy(DatenPaket,tempstring);
+        SendenBrauchbar(DatenPaket,1,1);
+
+    } else if(Spielernummer == 2){
+
+        printf("Spieler: 2 ist am Zug");
+        aktivListen = 1;
+        while(checkMessage == 0) {Sleep(100);} // warten...
+        checkMessage = 0;
+        aktivListen = 0;
+        ZugEmpfangen = 1;
+
+
+
+
+    }
+
+
+}
+
+int GetTempstring(char x) {
+    if(x == 'x') {
+        return atoi(tempstring[0]);
+    } else return atoi(tempstring[2]);
+
 }
 
