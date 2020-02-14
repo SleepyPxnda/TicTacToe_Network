@@ -26,10 +26,10 @@ int main() {
     printf("a: %d, b: %d \n",a,b);
 
     strcpy(string_1,OOF); // ich nehme mein string_1 array und kopiere den inhalt da rein
-    string_1[a] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
+   // string_1[a] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
     strcpy(string_2,OOF);
     string_2[0] = string_2[a];
-    string_2[b] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
+   // string_2[b] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
 
     printf("HABE BEKOMMEN : String1: %s \n",string_1);
     printf("HABE BEKOMMEN : String2: %s \n",string_2);

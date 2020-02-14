@@ -39,6 +39,7 @@ int aktivListen = 0;
 int messageStatus = 0;
 int modus = 0;
 int checkMessage = 0;
+char tempstring[60];
 char *GetMessages(int a);
 
 
@@ -268,7 +269,7 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
     int n = 0; // Debug
     n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
-    Sleep(2000);
+    Sleep(500);
     n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
     if(n==SOCKET_ERROR) {
         printf("Send failed %d\n", WSAGetLastError());
@@ -285,7 +286,6 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
 int ReadMessage(int socket, char * DataToMe, int modus) {
     int a,b, recv_size;
-    char tempstring[60];
 
     recv_size = recv(socket, DataToMe,65,0); // 1. Auswertung sind immer die beiden Integer
     if(recv_size > 0 ) {
