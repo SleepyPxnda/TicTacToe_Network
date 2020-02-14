@@ -219,7 +219,7 @@ int main() {
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
                 tempstring[0] = string_1;
-                tempstring[2] = string_2;
+                tempstring[1] = string_2;
                 doTurn(Spieler1,Playfield,1);
             } else {doTurn(Spieler1,Playfield,1);}
 
@@ -229,7 +229,7 @@ int main() {
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
                 tempstring[0] = string_1;
-                tempstring[2] = string_2;
+                tempstring[1] = string_2;
                 doTurn(Spieler2,Playfield,1);
             } else {doTurn(Spieler2,Playfield,1);}
 
@@ -363,16 +363,17 @@ ClientTurn(int Spielernummer) {
 
     if(Spielernummer == 2) {
 
-        printf("Spieler: 2 ist am Zug!");
-        printf("Eingabe als 1,1 2,2 usw \n");
+        printf("Spieler: 2 ist am Zug!\n");
+        printf("Eingabe als 11 22 usw \n");
         scanf(" %s", &tempstring);
         strcpy(DatenPaket,tempstring);
         SendenBrauchbar(DatenPaket,1,1);
 
     } else if(Spielernummer == 1){
 
-        printf("Spieler: 2 ist am Zug");
+        printf("Spieler: 1 ist am Zug!\n");
         aktivListen = 1;
+        printf("Bitte warten... \n");
         while(checkMessage == 0) {Sleep(100);} // warten...
         checkMessage = 0;
         aktivListen = 0;
@@ -389,16 +390,17 @@ ServerTurn(int Spielernummer) {
 
     if(Spielernummer == 1) {
 
-        printf("Spieler: 1 ist am Zug!");
-        printf("Eingabe als 1,1 2,2 usw \n");
+        printf("Spieler: 1 ist am Zug!\n");
+        printf("Eingabe als 11 22 usw \n");
         scanf(" %s", &tempstring);
         strcpy(DatenPaket,tempstring);
         SendenBrauchbar(DatenPaket,1,1);
 
     } else if(Spielernummer == 2){
 
-        printf("Spieler: 2 ist am Zug");
+        printf("Spieler: 2 ist am Zug\n");
         aktivListen = 1;
+        printf("Bitte warten... \n");
         while(checkMessage == 0) {Sleep(100);} // warten...
         checkMessage = 0;
         aktivListen = 0;
