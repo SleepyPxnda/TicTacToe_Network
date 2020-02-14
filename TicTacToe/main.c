@@ -10,6 +10,7 @@ int SPIELFELDGROESSE;
 char abfrage = 'n';
 char DatenPaket[64];
 int sperre = 0;
+char Convstring[2] = {'0','\0'};
 
 
 int main() {
@@ -70,13 +71,19 @@ int main() {
             printf("Übermittle Daten...\n");
 
             //Schickt Datenpaket mit Name und Zeichen
-            char Convstring[2]= {Spieler1.zeichen, '\0'};
+             Convstring[0]= Spieler1.zeichen;
             strcpy(DatenPaket,strcat(Spieler1.name,Convstring));
 
             printf("DATENPAKET: %s \n",DatenPaket);
             DatenPaket[strlen(Spieler1.name)+strlen(Convstring)+1]='\0';
 
             SendenBrauchbar(DatenPaket,(int) strlen(Spieler1.name)-1,(int)strlen(Convstring));
+
+            while(checkMessage == 0) {}
+
+            checkMessage = 1;
+
+            printf("Das Spiel beginnt...");
 
 
 
@@ -96,7 +103,42 @@ int main() {
             printf("Hallo Spieler 2! \n");
             printf("Warte auf Spielereingabe von Spieler 1...\n");
 
-            while(sperre == 0) {
+            //wenn Spieler 1 fertig ist, wird ein Paket mit verschickt, mit Name und Zeichen
+            //Wenn bekommen, also CheckMessage == 1, dann eigene Eingabe machen und prüfen ob die sich überlappen.
+            // wenn nicht, schicke das Paket zum Server rüber und er übernimmt es auch auf seiner Seite.
+
+            while(checkMessage == 0) {} // warten...
+
+            checkMessage = 1;
+
+            do {
+            printf("------------------\n");
+            printf("Spieler 1: %s, mit %c",string_1,string_2);
+            printf("------------------\n");
+            printf("Spielereinstellungen\n");
+            //Spieler 2
+            printf("Spieler Server: [name] ");
+            scanf("%s", &Spieler2.name);
+            printf("Zeichen von %s : ", Spieler2.name);
+            scanf(" %c", &Spieler2.zeichen);
+            printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen, Spieler2.type);
+            printf("------------------\n");
+            printf("Übermittle Daten...\n");
+
+                Convstring[0]= Spieler2.zeichen; // Spieler 2. in String umgewandelt für Abfrage
+
+            } while (string_1 == Spieler1.name ||  string_2[0] == Convstring[0]);
+
+            //Schickt Datenpaket mit Name und Zeichen
+            char Convstring[2] = {Spieler2.zeichen, '\0'};
+            strcpy(DatenPaket, strcat(Spieler2.name, Convstring));
+
+            printf("DATENPAKET: %s \n", DatenPaket);
+            DatenPaket[strlen(Spieler2.name) + strlen(Convstring) + 1] = '\0';
+
+            SendenBrauchbar(DatenPaket, (int) strlen(Spieler2.name) - 1, (int) strlen(Convstring));
+
+            printf("Das Spiel beginnt...");
 
                 //ChangeModus(1); // 1 - ist warte auf Server paket für Name und Spieler
 
@@ -105,7 +147,9 @@ int main() {
                 //char string1[32] = GetMessages(1);
                // char string2[32] = GetMessages(2);
 
-                if (checkMessage == 1) {
+                while (checkMessage == 1) {
+
+                    printf("bin in sperre");
 
                     char Convstring[2] = {Spieler1.zeichen, '\0'}; // Spieler 1. in String umgewandelt
 

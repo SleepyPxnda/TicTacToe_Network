@@ -37,7 +37,7 @@ int ReadMessage(int socket, char * DataToMe, int modus);
 int SendMessageToClient(int socket, char *message, char *intarray);
 int messageStatus = 0;
 int modus = 0;
-int checkMessage;
+int checkMessage = 0;
 char *GetMessages(int a);
 
 
