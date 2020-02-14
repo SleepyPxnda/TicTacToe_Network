@@ -61,7 +61,7 @@ DWORD WINAPI ThreadFunc(void* data) {
     // Do stuff.  This will be the first function called on the new thread.
     // When this function returns, the thread goes away.  See MSDN for more details.
     printf("thread meldet sich! \n");
-    while(1) {
+    while(Verbindung == 1) {
         while (aktivListen == 1) {
             Sleep(500);
             ReadMessage(ClientSocket, DataToMe, modus);
@@ -221,11 +221,14 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
      *
      */
    // printf(" %s",Datenpaket);
+
     strcpy(string_1,Datenpaket); // ich nehme mein string_1 array und kopiere den inhalt da rein
     string_1[string1length] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
-    strcpy(string_2,Datenpaket);
+
+    strcpy(string_2, Datenpaket);
     string_2[0] = string_2[string1length];
-    string_2[string2length] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
+    string_2[string2length] = '\0';
+    // ist jetzt statisch festgelegt - hab kein kopf dafür
 
     printf("String1: %s \n",string_1);
     printf("String2: %s \n",string_2);
@@ -306,6 +309,9 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
         }else if(messageStatus == 1) {
             printf("String bekommen!\n");
 
+            aktivListen = 0;
+            checkMessage = 1;
+
             a = (int) DataToMe[0];
             b = (int) DataToMe[1];
 
@@ -320,17 +326,11 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             printf("HABE BEKOMMEN : String1: %s \n",string_1);
             printf("HABE BEKOMMEN : String2: %s \n",string_2);
             DataToMe[0] = '/0';
+
             messageStatus = 0;
 
-            checkMessage = 1;
 
         }
-    }
-
-    if(modus == 1) {
-
-
-
     }
 
     DataToMe[0] = '/0';

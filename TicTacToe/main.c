@@ -5,6 +5,7 @@
 #include "Logik.h"
 #include "Netzwerk.h"
 #include <string.h>
+#include <w32api/synchapi.h>
 
 int SPIELFELDGROESSE;
 char abfrage = 'n';
@@ -71,7 +72,7 @@ int main() {
             printf("Übermittle Daten...\n");
 
             //Schickt Datenpaket mit Name und Zeichen
-             Convstring[0]= Spieler1.zeichen;
+             Convstring[0] = Spieler1.zeichen;
             strcpy(DatenPaket,strcat(Spieler1.name,Convstring));
 
             printf("DATENPAKET: %s \n",DatenPaket);
@@ -79,9 +80,32 @@ int main() {
 
             SendenBrauchbar(DatenPaket,(int) strlen(Spieler1.name)-1,(int)strlen(Convstring));
 
-            while(checkMessage == 0) {}
+            printf("ich höre");
 
-            checkMessage = 1;
+            aktivListen = 1; // Listen Thread für Kommunikation wird aktiviert
+
+            while(checkMessage == 0) {Sleep(100);} // warten...
+
+            checkMessage = 0;
+
+            printf("Spieleinstellungen\n");
+            printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
+            scanf("%d", &SPIELFELDGROESSE);
+
+            if(SPIELFELDGROESSE < 3){
+                SPIELFELDGROESSE = 3;
+            }
+            if(SPIELFELDGROESSE > 10){
+                SPIELFELDGROESSE = 10;
+            }
+
+            printf("Übermittle Spieleinstellung...");
+
+            Convstring[0]= (char) SPIELFELDGROESSE;
+            strcpy(DatenPaket, Convstring);
+            printf("Spielfeld ist: %d groß", DatenPaket[0]);
+
+            SendenBrauchbar(DatenPaket,1,0);
 
             printf("Das Spiel beginnt...");
 
@@ -102,15 +126,16 @@ int main() {
 
             printf("Hallo Spieler 2! \n");
             printf("Warte auf Spielereingabe von Spieler 1...\n");
-            aktivListen = 1;
 
             //wenn Spieler 1 fertig ist, wird ein Paket mit verschickt, mit Name und Zeichen
             //Wenn bekommen, also CheckMessage == 1, dann eigene Eingabe machen und prüfen ob die sich überlappen.
             // wenn nicht, schicke das Paket zum Server rüber und er übernimmt es auch auf seiner Seite.
 
-            while(checkMessage == 0) {} // warten...
+            aktivListen = 1;
 
-            checkMessage = 1;
+            while(checkMessage == 0) {Sleep(100);} // warten...
+
+            checkMessage = 0;
             aktivListen = 0;
 
             do {
@@ -140,7 +165,17 @@ int main() {
 
             SendenBrauchbar(DatenPaket, (int) strlen(Spieler2.name) - 1, (int) strlen(Convstring));
 
-            printf("Das Spiel beginnt...");
+            printf("warte auf Spieler 1 Spielfeldeinstellungen \n");
+
+            aktivListen = 1;
+
+            while(checkMessage == 0) {Sleep(100);} // warten...
+
+            checkMessage = 0;
+            aktivListen = 0;
+
+            SPIELFELDGROESSE = string_1[0];
+            printf("Das Spielfeld ist %d groß.", string_1[0]);
 
                 //ChangeModus(1); // 1 - ist warte auf Server paket für Name und Spieler
 
@@ -222,7 +257,10 @@ int main() {
             printf("Netzwerkfehler aufgetreten!");
         }
 
+        KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
+
     }
+
 
     printf("Spieleinstellungen\n");
     printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
@@ -234,7 +272,6 @@ int main() {
     if(SPIELFELDGROESSE > 10){
         SPIELFELDGROESSE = 10;
     }
-
     KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
 /*
     printf("------------------\n");
