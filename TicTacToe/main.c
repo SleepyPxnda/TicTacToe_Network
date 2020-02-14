@@ -136,7 +136,6 @@ int main() {
             // "Du Bist Spieler .."
             // Spielfeldgröße? wird als Paket geschickt an Client
             // derjenige, der Spieler 1 ist, beginnt ein Paket rüberzuschicken mit 1 4 oder so und aktualisiert das gleichzeitig in seinem Spiel
-    printf("test");
 
 
         } else if (networkcheck == 1) {
@@ -215,7 +214,7 @@ int main() {
         int counter = 0;
         while(gewinnerValue == 0){
 
-            ServerTurn(1); //Server ist dran
+            ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
                 tempstring[0] = string_1;
@@ -225,7 +224,7 @@ int main() {
 
             drawTicTacToeField(Playfield);
 
-            ClientTurn(2);
+            ClientTurn(Spielernummer);
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
                 tempstring[0] = string_1;
