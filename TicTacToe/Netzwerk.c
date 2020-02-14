@@ -306,11 +306,15 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             //DataToMe[0] = '/0';
             printf("message: %s \n", DataToMe);
             strcpy(tempstring,DataToMe);
-            printf("%s",tempstring);
             messageStatus = 1;
             printf("Warte jetzt auf den Length String...\n");
         }else if(messageStatus == 1) {
             printf("Length String bekommen!\n");
+
+            string_1[0] = '\0';
+            memset(DataToMe,0,strlen(string_1));
+            string_2[0] = '\0';
+            memset(DataToMe,0,strlen(string_2));
 
             aktivListen = 0;
             checkMessage = 1;
@@ -338,7 +342,7 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
         }
     }
 
-    DataToMe[0] = '/0';
+    DataToMe[0] = '\0';
     memset(DataToMe,0,strlen(DataToMe));
 
 
