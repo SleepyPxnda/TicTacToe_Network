@@ -90,6 +90,7 @@ int main() {
 
             printf("Spieleinstellungen\n");
             printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
+
             scanf("%d", &SPIELFELDGROESSE);
 
             if(SPIELFELDGROESSE < 3){
@@ -101,11 +102,17 @@ int main() {
 
             printf("Übermittle Spieleinstellung...");
 
-            Convstring[0]= (char) SPIELFELDGROESSE;
-            strcpy(DatenPaket, Convstring);
-            printf("Spielfeld ist: %d groß", DatenPaket[0]);
+            sprintf(DatenPaket,"%d",SPIELFELDGROESSE);
+            printf("Spielfeld ist: %s groß \n", DatenPaket);
 
-            SendenBrauchbar(DatenPaket,1,0);
+           // Convstring[0]= (char) SPIELFELDGROESSE;
+            //strcpy(DatenPaket, Convstring);
+            //DatenPaket[1] = '\0';
+
+            //DatenPaket[0] = (char) &SPIELFELDGROESSE;
+           // printf("Spielfeld ist: %d groß", DatenPaket[0]);
+
+            SendenBrauchbar(DatenPaket,1,1);
 
             printf("Das Spiel beginnt...");
 
@@ -175,7 +182,7 @@ int main() {
             aktivListen = 0;
 
             SPIELFELDGROESSE = string_1[0];
-            printf("Das Spielfeld ist %d groß.", string_1[0]);
+            printf("Das Spielfeld ist %d groß. \n", string_1[0]);
 
                 //ChangeModus(1); // 1 - ist warte auf Server paket für Name und Spieler
 

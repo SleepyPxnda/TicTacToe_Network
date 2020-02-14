@@ -211,7 +211,7 @@ int ThreadErstellen(int erkennung) {
     return 1;
 
 }
-
+// kommt ne 3 und ne 1 an
 int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
 
     // Empfange array, nehme das außeinander mit den jeweiligen größen, habe arrays hier initialisiert, die einfach nach dem 6. char \n setzen und beim anderen
@@ -241,6 +241,8 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
     char string_2[1] = Datenpaket[string1];
     printf("%s \n",string_2); */
     //scanf(" %s",&DataToHim);
+
+
 
     char stringlength[] = { string1length, string2length};
 
@@ -304,10 +306,11 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             //DataToMe[0] = '/0';
             printf("message: %s \n", DataToMe);
             strcpy(tempstring,DataToMe);
+            printf("%s",tempstring);
             messageStatus = 1;
-            printf("Warte jetzt auf den String...\n");
+            printf("Warte jetzt auf den Length String...\n");
         }else if(messageStatus == 1) {
-            printf("String bekommen!\n");
+            printf("Length String bekommen!\n");
 
             aktivListen = 0;
             checkMessage = 1;
@@ -328,6 +331,8 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             DataToMe[0] = '/0';
 
             messageStatus = 0;
+            a = 0;
+            b = 0;
 
 
         }
