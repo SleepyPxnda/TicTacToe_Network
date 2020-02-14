@@ -61,10 +61,12 @@ DWORD WINAPI ThreadFunc(void* data) {
     // Do stuff.  This will be the first function called on the new thread.
     // When this function returns, the thread goes away.  See MSDN for more details.
     printf("thread meldet sich! \n");
-    while(aktivListen == 1) {
-        Sleep(500);
-        ReadMessage(ClientSocket,DataToMe,modus);
-        //printf("ich lese...\n");
+    while(1) {
+        while (aktivListen == 1) {
+            Sleep(500);
+            ReadMessage(ClientSocket, DataToMe, modus);
+            //printf("ich lese...\n");
+        }
     }
 
 
