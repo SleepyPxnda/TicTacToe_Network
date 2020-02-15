@@ -12,11 +12,12 @@ char abfrage = 'n';
 char DatenPaket[64];
 char Convstring[2] = {'0','\0'};
 int Spielernummer = 0;
+int x,y;
 
 ClientTurn(int Spielernummer);
 ServerTurn(int Spielernummer);
 GiveKoordsToMain(int x, int y);
-char tempstring[3];
+char tempstring[2];
 int GetTempstring(char x);
 int ZugEmpfangen = 0;
 
@@ -26,6 +27,8 @@ int main() {
 
     SPIELER Spieler1;
     SPIELER Spieler2;
+
+    //sprintf(DatenPaket,"%d",tempInt[1]);
 
         /*
     char temp[10] = "Stefan1";
@@ -215,12 +218,11 @@ int main() {
         while(gewinnerValue == 0){
 
             ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
+            printf("afterTurn");
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                tempstring[0] = string_1;
-                tempstring[1] = string_2;
-                doTurn(Spieler1,Playfield,1);
-            } else {doTurn(Spieler1,Playfield,1);}
+                doTurn(Spieler1,Playfield,1,(int)string_1,(int)string_2);
+            } else {printf("###bruh###"); doTurn(Spieler1,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
 
@@ -229,8 +231,8 @@ int main() {
                 ZugEmpfangen = 0;
                 tempstring[0] = string_1;
                 tempstring[1] = string_2;
-                doTurn(Spieler2,Playfield,1);
-            } else {doTurn(Spieler2,Playfield,1);}
+                doTurn(Spieler2,Playfield,1,(int)string_1,(int)string_2);
+            } else {doTurn(Spieler2,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
 /*
@@ -364,8 +366,12 @@ ClientTurn(int Spielernummer) {
 
         printf("Spieler: 2 ist am Zug!\n");
         printf("Eingabe als 11 22 usw \n");
-        scanf(" %s", &tempstring);
-        strcpy(DatenPaket,tempstring);
+        x = 0;
+        y = 0;
+        scanf(" %d,%d",&x,&y);
+        int z = (1*y)+(10*x);
+        sprintf(DatenPaket,"%d",z);
+        printf("%s",DatenPaket);
         SendenBrauchbar(DatenPaket,1,1);
 
     } else if(Spielernummer == 1){
@@ -376,6 +382,7 @@ ClientTurn(int Spielernummer) {
         while(checkMessage == 0) {Sleep(100);} // warten...
         checkMessage = 0;
         aktivListen = 0;
+        printf("bigbruh");
         ZugEmpfangen = 1;
 
 
@@ -389,10 +396,19 @@ ServerTurn(int Spielernummer) {
 
     if(Spielernummer == 1) {
 
-        printf("Spieler: 1 ist am Zug!\n");
-        printf("Eingabe als 11 22 usw \n");
-        scanf(" %s", &tempstring);
-        strcpy(DatenPaket,tempstring);
+        //scanf("%d,%d",tempInt[0],tempInt[1]);
+      //  sprintf(DatenPaket,"%d",tempInt[0]);
+       // sprintf(DatenPaket,"%d",tempInt[1]);
+      //  sprintf(DatenPaket,"%d",tempInt[1]);
+       // scanf(" %s", &tempstring);
+       // strcpy(DatenPaket,tempstring);
+        printf("Eingabe als 1,1 2,2 usw \n");
+        x = 0;
+        y = 0;
+        scanf(" %d,%d",&x,&y);
+        int z = (1*y)+(10*x);
+        sprintf(DatenPaket,"%d",z);
+        printf("%s",DatenPaket);
         SendenBrauchbar(DatenPaket,1,1);
 
     } else if(Spielernummer == 2){
@@ -411,12 +427,13 @@ ServerTurn(int Spielernummer) {
     }
 
 
+
 }
 
 int GetTempstring(char x) {
     if(x == 'x') {
-        return atoi(tempstring[0]);
-    } else return atoi(tempstring[2]);
+       // return atoi(tempstring[0]);
+    } //else return atoi(tempstring[2]);
 
 }
 

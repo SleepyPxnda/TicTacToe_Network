@@ -117,7 +117,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 }
 
 
-void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode){
+void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode,int x,int y){
     KOORDINATE scanKoord;
 
 
@@ -131,8 +131,8 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],
         printf("Der Computer %s hat ein Zeichen an %d , %d gesetzt\n",player.name, scanKoord.x, scanKoord.y);
     } else if (player.type == 0 && mode == 1){
 
-        scanKoord.x = (int)GetTempstring('x');
-        scanKoord.y = (int)GetTempstring('y');
+        scanKoord.x = x;
+        scanKoord.y = y;
 
 
     }

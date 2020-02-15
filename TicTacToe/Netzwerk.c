@@ -245,42 +245,33 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
 
 
 
-    char stringlength[] = { string1length, string2length};
+    char stringlength[] = { (char)string1length, (char)string2length};
 
 
 
     SendMessageToClient(GetOtherSocket(),Datenpaket,stringlength); // Sendet zum Clienten oder Server
 
-    Sleep(500);
-}
 
-int SendenChat() {
-
-    DataToHim[0] = '\0';
-    scanf(" %s",&DataToHim);
-
-    //SendMessageToClient(GetOtherSocket(),DataToHim); // Sendet zum Clienten oder Server
 
     Sleep(500);
-
 }
 
 int SendMessageToClient(int socket, char *message, char *intarray){
 
-    int n = 0; // Debug
-    n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
-    Sleep(500);
+    int n = 0,a = 0; // Debug
+    a = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
+    Sleep(1000);
     n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
-    if(n==SOCKET_ERROR) {
+    if(n || a==SOCKET_ERROR) {
         printf("Send failed %d\n", WSAGetLastError());
     }
-    if(n<0) {
+    if(n || a <0) {
         printf("Error sending to Server");
     } else if ( n == 0 ) {printf("Server closed the Connection.\n");}
 
-    printf("message: %s \n", message);
+   // printf("message: %s \n", message);
     //return n;
-
+    printf("----------------");
 
 }
 
