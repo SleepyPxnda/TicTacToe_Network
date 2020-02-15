@@ -218,13 +218,17 @@ int main() {
         while(gewinnerValue == 0){
 
             ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
-            printf("afterTurn");
+            printf("afterTurn\n");
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
                 doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
             } else {printf("###bruh###\n"); doTurn(Spieler1,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
+            gewinnerValue = testForWinner(Playfield);
+            if(gewinnerValue != 0) {
+                break;
+            }
 
             ClientTurn(Spielernummer);
             if(ZugEmpfangen == 1) {
@@ -233,6 +237,10 @@ int main() {
             } else {doTurn(Spieler2,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
+            gewinnerValue = testForWinner(Playfield);
+            if(gewinnerValue != 0) {
+                break;
+            }
 /*
             if(Spielernummer == 2) { //Server ist als erstes am Zug
                 printf("Spieler: %s ist am Zug!",Spieler1.name );
@@ -252,9 +260,6 @@ int main() {
             }*/
 
             counter++;
-
-            gewinnerValue = testForWinner(Playfield);
-
             system("clear");
         }
 
