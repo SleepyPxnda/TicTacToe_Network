@@ -79,16 +79,9 @@ int main() {
 
         system("clear");
     }
-
-<<<<<<< HEAD
-    drawTicTacToeField(Playfield);
-
-    if(gewinnerValue == 5){
-        printf("Feld ist voll");
-=======
+    
     if(gewinnerValue == 5){
         printf("Das Feld ist voll, Unentschieden\n");
->>>>>>> Comp-Improvements
         return 1;
     }
 
