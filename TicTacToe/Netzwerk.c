@@ -258,14 +258,14 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
 
 int SendMessageToClient(int socket, char *message, char *intarray){
 
-    int n = 0,a = 0; // Debug
-    a = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
+    int n = 0; // Debug
+    n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
     Sleep(1000);
     n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
-    if(n || a==SOCKET_ERROR) {
+    if(n==SOCKET_ERROR) {
         printf("Send failed %d\n", WSAGetLastError());
     }
-    if(n || a <0) {
+    if(n<0) {
         printf("Error sending to Server");
     } else if ( n == 0 ) {printf("Server closed the Connection.\n");}
 

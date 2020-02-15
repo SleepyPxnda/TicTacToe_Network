@@ -218,11 +218,10 @@ int main() {
         while(gewinnerValue == 0){
 
             ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
-            printf("afterTurn\n");
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
                 doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
-            } else {printf("###bruh###\n"); doTurn(Spieler1,Playfield,1,x,y);}
+            } else { doTurn(Spieler1,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
             gewinnerValue = testForWinner(Playfield);

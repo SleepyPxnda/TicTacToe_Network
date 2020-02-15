@@ -141,7 +141,7 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],
 
     while(setMarkAtPosition(Feld,scanKoord) == 0){
         printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
-        scanf(" %d %d", &scanKoord.x, &scanKoord.y);
+        scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
     }
 }
 
