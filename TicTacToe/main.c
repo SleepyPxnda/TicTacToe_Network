@@ -168,7 +168,7 @@ int main() {
             scanf("%s", &Spieler2.name);
             printf("Zeichen von %s : ", Spieler2.name);
             scanf(" %c", &Spieler2.zeichen);
-            printf("Spieler 2 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen);
+            printf("Spieler 2 eingeloggt: %s - %c \n", Spieler2.name, Spieler2.zeichen);
             printf("------------------\n");
             printf("Übermittle Daten...\n");
 
@@ -220,7 +220,7 @@ int main() {
             ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
+                doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
             } else { doTurn(Spieler1,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
@@ -232,7 +232,7 @@ int main() {
             ClientTurn(Spielernummer);
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
+                doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
             } else {doTurn(Spieler2,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
