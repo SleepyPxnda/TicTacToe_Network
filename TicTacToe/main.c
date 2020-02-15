@@ -160,7 +160,7 @@ int main() {
 
             do {
             printf("------------------\n");
-            printf("Spieler 1: %s, mit %c",string_1,string_2);
+            printf("Spieler 1: %s, mit %s",string_1,string_2);
             printf("------------------\n");
             printf("Spielereinstellungen\n");
             //Spieler 2
@@ -221,17 +221,15 @@ int main() {
             printf("afterTurn");
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                doTurn(Spieler1,Playfield,1,(int)string_1,(int)string_2);
-            } else {printf("###bruh###"); doTurn(Spieler1,Playfield,1,x,y);}
+                doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
+            } else {printf("###bruh###\n"); doTurn(Spieler1,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
 
             ClientTurn(Spielernummer);
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                tempstring[0] = string_1;
-                tempstring[1] = string_2;
-                doTurn(Spieler2,Playfield,1,(int)string_1,(int)string_2);
+                doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
             } else {doTurn(Spieler2,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
@@ -333,10 +331,10 @@ int main() {
         drawTicTacToeField(Playfield);
 
         if(counter % 2 == 0){
-            doTurn(Spieler1,Playfield,0);
+            doTurn(Spieler1,Playfield,0,0,0);
         }
         else {
-            doTurn(Spieler2,Playfield,0);
+            doTurn(Spieler2,Playfield,0,0,0);
         }
         counter++;
 
@@ -365,7 +363,7 @@ ClientTurn(int Spielernummer) {
     if(Spielernummer == 2) {
 
         printf("Spieler: 2 ist am Zug!\n");
-        printf("Eingabe als 11 22 usw \n");
+        printf("Eingabe als 1,1 2,2 usw \n");
         x = 0;
         y = 0;
         scanf(" %d,%d",&x,&y);

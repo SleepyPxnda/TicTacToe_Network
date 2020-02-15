@@ -271,7 +271,6 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
    // printf("message: %s \n", message);
     //return n;
-    printf("----------------");
 
 }
 
@@ -280,18 +279,7 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
 
     recv_size = recv(socket, DataToMe,65,0); // 1. Auswertung sind immer die beiden Integer
     if(recv_size > 0 ) {
-        if(DataToMe == "bbb") {
-            //erneute Eingabe von Name,Zeichen
-        }
-        if(DataToMe == "ccc") {
-            // Geb Random Zahl vom Server
-        }
-        if(DataToMe == "ddd") {
-            //Spielfeldgröße als paket zu geschickt bekommen
-        }
-        if(DataToMe == "eee") {
-            // Dein Gegner hat feld xy belegt (aktualisiert auch auf deiner Seite)
-        }
+
         if(messageStatus == 0) {
             printf("habe empfangen - ");
             //DataToMe[0] = '/0';
