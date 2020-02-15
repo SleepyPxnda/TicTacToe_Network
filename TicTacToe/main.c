@@ -64,7 +64,7 @@ int main() {
     int counter = 0;
     while(gewinnerValue == 0){
 
-        printf("\033[31mAktueller Zug : %d\033[0m\n", counter);
+        printf("\033[31mAktueller Zug : %d\033[0m\n", counter++);
 
         drawTicTacToeField(Playfield);
 
@@ -74,25 +74,42 @@ int main() {
         else {
             doTurn(Spieler2,Playfield);
         }
-        counter++;
 
         gewinnerValue = testForWinner(Playfield);
 
         system("clear");
     }
 
+    drawTicTacToeField(Playfield);
+
     if(gewinnerValue == 5){
-        printf("Das Feld ist voll, Unentschieden\n");
+        printf("Feld ist voll");
         return 1;
     }
 
-    drawTicTacToeField(Playfield);
-
     if(counter % 2 == 0){
-        printf("\033[33m%s ist Sieger\033[0m\n",Spieler2.name);
+        printf("\033[33m%s hat ",Spieler2.name);
     } else {
-        printf("\033[33m%s ist Sieger\033[0m\n",Spieler1.name);
+        printf("\033[33m%s hat ",Spieler1.name);
     }
+
+    switch(gewinnerValue) {
+        case 1: //Horizontal
+            printf("Horizontal gewonnen ");
+        case 2: //Vertikal
+            printf("Vertikal gewonnen ");
+        case 3: //Diagonal
+            printf("Diagonal gewonnen ");
+        case 4: //Antidiagonal
+            printf("Antidiagonal gewonnen ");
+        default:
+            printf("Error  bei der Gewinnvaluation, bitte kontaktieren sie den Administrator");
+    }
+    printf("\033[0m");
+
+
+
+
     return 1;
 }
 
