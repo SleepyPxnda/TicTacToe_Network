@@ -7,10 +7,10 @@
 
 
 int GetHosttype();
-int ThreadErstellen(int erkennung);
+int ThreadErstellen();
 int SendenBrauchbar(char *Datenpaket, int string1, int string2);
-//ChangeModus(int a);
-char *GetMessages(int a);
+
+
 
 
 int checkMessage;

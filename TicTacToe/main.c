@@ -41,7 +41,7 @@ int main() {
     if(abfrage == 'm') {
 
         int networkcheck = GetHosttype();
-        int threadDebug = ThreadErstellen(networkcheck);
+        ThreadErstellen(networkcheck);
         Spieler1.type = 0; //Beides Spieler typen
         Spieler2.type = 0;
 
@@ -99,8 +99,9 @@ int main() {
 
             sprintf(DatenPaket,"%d",SPIELFELDGROESSE);
             printf("Spielfeld ist: %s groß \n", DatenPaket);
-
-            SendenBrauchbar(DatenPaket,1,1);
+            if(SPIELFELDGROESSE <10) {
+                SendenBrauchbar(DatenPaket, 1, 1);
+            } else {SendenBrauchbar(DatenPaket, 2, 1);}
 
             printf("Das Spiel beginnt...\n");
             Spielernummer = 1;
