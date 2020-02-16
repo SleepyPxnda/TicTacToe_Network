@@ -6,6 +6,9 @@
   * [Spielablauf](#spielablauf)
   * [Gewinntester](#gewinntester)
   * [Computerspieler](#computerspieler)
+  * [Netzwerk](#Netzwerk)
+  * [Spielablauf Netzwerk] (#Spielablauf_Netzwerk)
+  * [Paketvermittlung] (#Paketvermittlung)
 - [Anwenderdokumentation](#anwenderdokumentation)
   * [TicTacToe starten](#tictactoe-starten)
   * [Eingabe der Einstellungen](#eingabe-der-einstellungen)
@@ -33,6 +36,30 @@ Auch wird jeder „Art“ des Gewinns mit verschiedenen Returns bezeichnet, soda
 ## Computerspieler
 Unser Computerspieler hat mehr oder weniger nur eine Funktionalität, er sucht sich aus allen freien Feldern eins zufällig raus und setzt an diese Stelle sein Zeichen, welches in der Spielerauswahl festgelegt wurde
 
+## Netzwerk
+Man wird gefragt, ob man entweder Client oder Host ist. Wenn Client, dann die IP Adresse im Format XXX.XXX.XXX.XXX eingeben und bestätigen. Nach der Bestätigung, wird Winsock initialisiert, welcher Notwendig ist für Netzwerkkonfigurationen. Mit WSAStartup wird dies umgesetzt und WSA (bei keinen Fehlern) gestartet. ein Socket (der für die Verbindung benötigt wird) wird erstellt, mit eigener AF_INET (IPv4 Adresse), SOCK_STREAM (TCP) und Protokoll: 0. In ein gegebener vordefinierter Strukt von winsock2.h werden die Daten von dem zu erreichenden Server eingepflegt. Standart Port hier für die Verbindung ist 8080. Anschließend wird versucht mit connect(ClientSocket, strukt des Servers, sizeof(server)) != 0) sich zu verbinden, bei Fehlermeldung ist es ein Error und das Programm schließt sich oder man verbindet sich. 
+
+Der Host initialisiert Winsock genauso, erstellt seinen socket und speichert in den Server strukt als Adresse htonl(INADDR_ANY), was für alle eigenen IP Adressen "gebündelt" steht. Der Socket wird anschließen per Funktion bind(EigenerSocket, strukt des Servers, sizeof(server))) != 0 gebunden, falls keine Probleme auftreten. Anschließend wird der Socket auf "listening" gestellt und ist damit erreichbar für Clienten, die sich verbinden wollen. In einer While schleife wird dann so lange gewartet, bis ein valider ClientSocket eintritt und durch accept(eigenerSocket,Adresse: NULL,addlren: NULL) akzeptiert. 
+
+## Spielablauf Netzwerk
+ein Listener Thread wird gestartet, der sich für die ReadMessages(...) kümmert.
+Der Server/Host als Spieler 1, gibt seinen Spieler1.namen und Spieler.zeichen in das definierte Spieler strukt ein. Darauffolgend wird das Zeichen in ein String umgewandelt (Convstring), per strcpy (string-copy) und strcat(Concatenate strings) durch strcpy(DatenPaket,strcat(Spieler1.name,Convstring)) die Daten in das zu übermittelnde Datenpaket übergeben und zur Abrundung das Datenpaket an der Stelle strlen von namen und convstring+1 mit '\0' versehen. 
+---Paketvermittlung---
+aktivListen = 1 (ReadMessages Funktion wird alle 0,5s abgerufen) und auf die Eingabe vom Clienten für namen und zeichen wird gewartet. Wenn der C name == H name ist, (oder zeichen), dann muss der Client das neu eingeben. Das Paket wird auch so verpackt und übermittelt und Host stellt die Spielfeldgröße (zwischen 3 und 10) ein und beginnt das Spiel. 
+Host (Spielernummer = 1), Client (Spielernummer == 2).
+Spiel wird gestartet: if(Spielernummer == 1)
+Spieler 1 ist am Zug, eingabe von x,y und getestet ob das belegt ist. Wenn nicht, setze dein Zeichen und sende ein Paket an Spieler 2 und wenn doch, erfordere erneute eingabe.)
+if(Spielernummer == 2) 
+Spieler 1 ist am Zug, Bitte warten und eine while Schleife zwingt den Anwender zu warten, bis ein Paket reinkommt. Wenn angekommen, setze die Koordinaten vom Paket in dein eigenes Feld mit seinem Zeichen. 
+TestForWinner testet, ob ein Spieler gewonnen hat. Wenn ja, breche while Schleife vom Spiel ab. 
+Das ganze wird dann nochmal gedreht, also mit (Spielernummer == 2) und dann (Spielernummer == 1) um ein symmetrischen Aufbau zu haben und am Ende wird noch ein counter hochgezählt, anhand diesem man den Sieger ermittelt. 
+
+## Paketvermittlung
+Idee: Speichere alles in ein langen String(als Paket) und übergeben der Funktion die Längen der eingefügten Strings, um diese wieder auseinanderbauen zu können.
+Das Paket wird dann an den Clienten per SendenBrauchbar(DatenPaket,int strlen(name),int strlen(convstring)) übergeben. In SendenBrauchbar(char (pointer)Datenpaket, int string1length, int string2length) wird in string1 das Datenpaket reinkopiert und string_1 an stelle der übergebenen string1length mit '\0' abgeschlossen. Dasselbe passiert bei string_2, jedoch geht man da von string_2[0] aus und speichert dort hinnein string_2[string1length], anschließen auch abgeschlossen an string2length mit '\0'. jetzt werden die int string1length und 2 in ein char array gespeichert und an die Funktion SendMessageToClient(GetOtherSocket(),Datenpaket,stringlength) übergeben.
+Diese Funktion Sendet einmal die message(das DatenPaket) und die Längen der Strings um sie wieder auseinanderbauen zu können. 
+ReadMessage(int socket, char * DataToMe) wird durch ein Thread (falls aktivListen = 1 ist) alle 0,5s abgefragt und bei empfang eines Pakets durch recv(socket, DataToMe /* Buffer */*/, 65 (Datenpaket länge),0) zum einen der String entgegengenommen messageStatus == 0 und dann darauffolgend die String längen, um das Paket auseinander zu bauen (messageStatus == 0). Am Ende wird das DataToMe array geleert mit DataToMe[0] = '\0' und memset(DataToMe,0,strlen(DataToMe)).   
+
 # Anwenderdokumentation
 
 ## TicTacToe starten:
@@ -44,7 +71,7 @@ Zuerst muss der Anwender sich für Multiplayer („m“) oder Singleplayer („s
 ## Multiplayer 
 Netzwerk und zweiter Anwender notwendig
 Der Host muss sich als Host („H“) angeben und der zweite Anwender muss sich als Client („C“) angeben.
-Die Verbindung wird dann über Eingabe der IP-Adresse des Hosts im angegebenen Format hergestellt und danach müssen die Spieleinstellungen konfiguriert werden.
+Die Verbindung wird dann über Eingabe der IP-Adresse des Hosts im angegebenen Format hergestellt und danach müssen die Spieleinstellungen konfiguriert werden. Erst der Host und dann der Client. Anschließend bekommt der Host die eingestellte Spieleinstellung übermittelt und das Spiel beginnt.
 
 ## Singleplayer
 Direkter Übergang zu den Spieleinstellungen.
