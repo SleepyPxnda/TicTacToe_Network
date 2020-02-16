@@ -100,6 +100,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
     if(rowCellsEqualsDown == SPIELFELDGROESSE){       // Abfrage für Computer, weil andere Koordinateneinheit FIX?
         return 4;
     }
+
     int maxCells = 0;
     for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
         for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
