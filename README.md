@@ -61,3 +61,6 @@ Spieler 1 und Spieler 2 setzen immer abwechselnd ihr Zeichen auf das Spielfeld, 
 Ein Spieler hat gewonnen, wenn er es schafft eine ganze Reihe, Spalte oder Diagonale mit seinem Zeichen zu belegen.
 Wenn ein Spieler gewonnen hat, wird der Sieger ermittelt und ausgegeben.                                      Ist das Spielfeld voll und es gibt keinen Sieger wird unentschieden ausgegeben.
 In beiden Fällen ist der Programmablauf beendet.
+
+#Gruppe:
+Felix Grohme, Dennis Mayer, Daniel De Marco
