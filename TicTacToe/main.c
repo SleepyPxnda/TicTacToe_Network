@@ -21,10 +21,14 @@ int ZugEmpfangen = 0;
 
 
 
+
+
 int main() {
 
     SPIELER Spieler1;
     SPIELER Spieler2;
+
+
 
     //sprintf(DatenPaket,"%d",tempInt[1]);
 
@@ -211,65 +215,116 @@ int main() {
             printf("Netzwerkfehler aufgetreten!\n");
         }
 
-        KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
         int gewinnerValue = 0;
+        KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
+
 
         for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++) {
             for (int reihe = 0; reihe < SPIELFELDGROESSE; reihe++) {
                 Playfield[reihe][spalte].value = CELLPLACEHOLDER;
+
             }
         }
         system("clear");
         int counter = 0;
         while(gewinnerValue == 0){
-            if(gewinnerValue == 0) {
-                ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
+            if(testForWinner(Playfield) == 0) {
+
+                //ServerTurn
+
+                if(Spielernummer == 1) {
+
+                    printf("Spieler: 1 ist am Zug\n");
+                    printf("Eingabe als 1,1 2,2 usw \n");
+                    x = 0;
+                    y = 0;
+                    int a = 0;
+                    do {
+                        scanf(" %d,%d", &x, &y);
+                        int z = (1 * y) + (10 * x);
+                        sprintf(DatenPaket, "%d", z);
+                        printf("%s", DatenPaket);
+                        a = doTurn(Spieler1, Playfield,1, x, y);
+                    }while(a == -1);
+
+                    SendenBrauchbar(DatenPaket,1,1);
+
+                } else if(Spielernummer == 2){
+
+                    printf("Spieler: 1 ist am Zug\n");
+                    aktivListen = 1;
+                    printf("Bitte warten... \n");
+                    while(checkMessage == 0) {Sleep(100);} // warten...
+                    checkMessage = 0;
+                    aktivListen = 0;
+                    ZugEmpfangen = 1;
+                }
+
                 if (ZugEmpfangen == 1) {
                     ZugEmpfangen = 0;
                     doTurn(Spieler1, Playfield, 1, atoi(string_1), atoi(string_2));
-                } else { doTurn(Spieler1, Playfield, 1, x, y); }
+                }
 
                 drawTicTacToeField(Playfield);
-                gewinnerValue = testForWinner(Playfield);
             }
-            if(gewinnerValue == 0) {
-                ClientTurn(Spielernummer);
+
+            gewinnerValue = testForWinner(Playfield);
+
+            if(testForWinner(Playfield) == 2){
+                printf("Das Feld ist voll, Unentschieden\n");
+                return 1;
+            }
+            if(testForWinner(Playfield) == 0) {
+
+                //Client
+
+                if(Spielernummer == 2) {
+
+                    printf("Spieler: 2 ist am Zug!\n");
+                    printf("Eingabe als 1,1 2,2 usw \n");
+                    x = 0;
+                    y = 0;
+                    int a = 0;
+                    do {
+                        scanf(" %d,%d", &x, &y);
+                        int z = (1 * y) + (10 * x);
+                        sprintf(DatenPaket, "%d", z);
+                        printf("%s", DatenPaket);
+                        a = doTurn(Spieler2, Playfield,1, x, y);
+                    }while(a == -1);
+
+                    SendenBrauchbar(DatenPaket,1,1);
+
+                } else if(Spielernummer == 1) {
+
+                    printf("Spieler: 2 ist am Zug!\n");
+                    aktivListen = 1;
+                    printf("Bitte warten... \n");
+                    while (checkMessage == 0) { Sleep(100); } // warten...
+                    checkMessage = 0;
+                    aktivListen = 0;
+                    ZugEmpfangen = 1;
+                }
+
                 if (ZugEmpfangen == 1) {
                     ZugEmpfangen = 0;
                     doTurn(Spieler2, Playfield, 1, atoi(string_1), atoi(string_2));
-                } else { doTurn(Spieler2, Playfield, 1, x, y); }
+                }
 
                 drawTicTacToeField(Playfield);
-                gewinnerValue = testForWinner(Playfield);
+              //  gewinnerValue = testForWinner(Playfield);
             }
-/*
-            if(Spielernummer == 2) { //Server ist als erstes am Zug
-                printf("Spieler: %s ist am Zug!",Spieler1.name );
-                aktivListen = 1;
-                while(checkMessage == 0) {Sleep(100);} // warten...
-                checkMessage = 0;
-                aktivListen = 0;
-                //Bekomme paket und speicher es ein.
 
+            gewinnerValue = testForWinner(Playfield);
+
+            if(testForWinner(Playfield) == 2){
+                printf("Das Feld ist voll, Unentschieden\n");
+                return 1;
             }
-            if(Spielernummer == 1) {
-
-                printf("Spieler: %s ist am Zug!",Spieler2.name);
-
-                strcpy(DatenPaket,)
-                SendenBrauchbar(DatenPaket, (int) strlen(Spieler2.name) - 1, (int) strlen(Convstring));
-            }*/
 
             counter++;
             system("clear");
         }
-
-        if(gewinnerValue == 2){
-            printf("Das Feld ist voll, Unentschieden\n");
-            return 1;
-        }
-
-        drawTicTacToeField(Playfield);
 
         if(counter % 2 == 0){
             printf("%s ist Sieger\n",Spieler2.name);
@@ -277,8 +332,18 @@ int main() {
             printf("%s ist Sieger\n",Spieler1.name);
         }
         return 1;
-
     }
+
+    /*
+     *   drawTicTacToeField(Playfield);
+
+        if(counter % 2 == 0){
+            printf("%s ist Sieger\n",Spieler2.name);
+        } else {
+            printf("%s ist Sieger\n",Spieler1.name);
+        }
+        return 1;
+     */
 
 
     printf("Spieleinstellungen\n");
@@ -291,7 +356,7 @@ int main() {
     if(SPIELFELDGROESSE > 10){
         SPIELFELDGROESSE = 10;
     }
-    KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
+    //KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
 /*
     printf("------------------\n");
     printf("Spielereinstellungen\n");
@@ -322,6 +387,7 @@ int main() {
     printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler2.name, Spieler2.zeichen, Spieler2.type);
 
     int gewinnerValue = 0;
+    KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
 
     for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++) {
         for (int reihe = 0; reihe < SPIELFELDGROESSE; reihe++) {
@@ -409,10 +475,14 @@ ServerTurn(int Spielernummer) {
         printf("Eingabe als 1,1 2,2 usw \n");
         x = 0;
         y = 0;
-        scanf(" %d,%d",&x,&y);
-        int z = (1*y)+(10*x);
-        sprintf(DatenPaket,"%d",z);
-        printf("%s",DatenPaket);
+        int a = 0;
+        do {
+            scanf(" %d,%d", &x, &y);
+            int z = (1 * y) + (10 * x);
+            sprintf(DatenPaket, "%d", z);
+            printf("%s", DatenPaket);
+            //a = doTurn(Spieler1, PLAYFIELD,1, x, y);
+        }while(a != -1);
         SendenBrauchbar(DatenPaket,1,1);
 
     } else if(Spielernummer == 2){

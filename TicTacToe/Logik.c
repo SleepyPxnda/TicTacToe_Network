@@ -117,9 +117,8 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 }
 
 
-void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode,int x,int y){
+int doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode,int x,int y){
     KOORDINATE scanKoord;
-
 
     if (player.type == 0 && mode == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
@@ -134,15 +133,22 @@ void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],
         scanKoord.x = x;
         scanKoord.y = y;
 
+        scanKoord.value = player.zeichen;
+
+        if(setMarkAtPosition(Feld,scanKoord) == 0) {
+            printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
+            return -1;
+        } else {return 0;}
 
     }
 
     scanKoord.value = player.zeichen;
 
-    while(setMarkAtPosition(Feld,scanKoord) == 0){
+    while(setMarkAtPosition(Feld,scanKoord) == 0 && mode == 0){
         printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
         scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
     }
+
 }
 
 
