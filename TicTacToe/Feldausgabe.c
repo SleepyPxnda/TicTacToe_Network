@@ -6,7 +6,7 @@
 
 extern int SPIELFELDGROESSE;
 
-void drawTicTacToeField(KOORDINATE Feld[][SPIELFELDGROESSE]){
+void drawTicTacToeField(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
     for(int spalte = 0;spalte  < SPIELFELDGROESSE; spalte++){
         printf("| ");
         for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
