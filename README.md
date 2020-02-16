@@ -1,5 +1,5 @@
 # TicTacToe_Network
-# Projekt nur über Windows Spielbar
+## Projekt nur über Windows Spielbar
 
 - [Entwicklerdokumentation](#entwicklerdokumentation)
   * [Vorraussetzungen fuer Multiplayer](#vorraussetzungen-fuer-multiplayer)
