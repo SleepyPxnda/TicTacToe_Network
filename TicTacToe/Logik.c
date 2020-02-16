@@ -121,8 +121,8 @@ int doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],i
     KOORDINATE scanKoord;
 
     if (player.type == 0 && mode == 0){
-        printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\n", player.name);
-        scanf(" %d %d", &scanKoord.x, &scanKoord.y);
+        printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x,y)\n", player.name);
+        scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
 
     } else if(player.type == 1){
             sleep(1);

@@ -229,19 +229,10 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
     strcpy(string_2, Datenpaket);
     string_2[0] = string_2[string1length];
     string_2[string2length] = '\0';
-    // ist jetzt statisch festgelegt - hab kein kopf dafür
 
-    printf("String1: %s \n",string_1);
-    printf("String2: %s \n",string_2);
+   // printf("String1: %s \n",string_1);
+   // printf("String2: %s \n",string_2);
 
-    // Schicke erst das array mit den Integern,
-    // Schicke dann die Strings
-
-   /* char string_1[6] = Datenpaket[0];
-    printf("%s \n",string_1);
-    char string_2[1] = Datenpaket[string1];
-    printf("%s \n",string_2); */
-    //scanf(" %s",&DataToHim);
 
 
 
@@ -260,7 +251,7 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
     int n = 0; // Debug
     n = send(socket,message,65,0); //Wieso übergebe ich hier ein CHAR
-    Sleep(1000);
+    Sleep(100);
     n = send(socket,intarray,2,0); //Wieso übergebe ich hier ein CHAR
     if(n==SOCKET_ERROR) {
         printf("Send failed %d\n", WSAGetLastError());
@@ -286,7 +277,7 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             printf("message: %s \n", DataToMe);
             strcpy(tempstring,DataToMe);
             messageStatus = 1;
-            printf("Warte jetzt auf den Length String...\n");
+          //  printf("Warte jetzt auf den Length String...\n");
         }else if(messageStatus == 1) {
             printf("Length String bekommen!\n");
 
@@ -301,7 +292,7 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             a = (int) DataToMe[0];
             b = (int) DataToMe[1];
 
-            printf("a: %d, b: %d \n",a,b);
+          //  printf("a: %d, b: %d \n",a,b);
 
             strcpy(string_1,tempstring); // ich nehme mein string_1 array und kopiere den inhalt da rein
             string_1[a] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
@@ -309,8 +300,8 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
             string_2[0] = string_2[a];
             string_2[b] = '\0';                 // ist jetzt statisch festgelegt - hab kein kopf dafür
 
-            printf("HABE BEKOMMEN : String1: %s \n",string_1);
-            printf("HABE BEKOMMEN : String2: %s \n",string_2);
+         //   printf("HABE BEKOMMEN : String1: %s \n",string_1);
+           // printf("HABE BEKOMMEN : String2: %s \n",string_2);
             DataToMe[0] = '\0';
             messageStatus = 0;
 

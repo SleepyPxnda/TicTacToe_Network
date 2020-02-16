@@ -95,9 +95,9 @@ int main() {
 
             SendenBrauchbar(DatenPaket,(int) strlen(Spieler1.name)-1,(int)strlen(Convstring));
 
-            printf("ich höre");
-
             aktivListen = 1; // Listen Thread für Kommunikation wird aktiviert
+
+            printf("Warte auf Spieler 2 einstellung...");
 
             while(checkMessage == 0) {Sleep(100);} // warten...
             checkMessage = 0;
@@ -106,8 +106,10 @@ int main() {
             strcpy(Spieler2.name,string_1);
             Spieler2.zeichen = string_2[0];
 
-
+            printf("##################\n");
             printf("Spieleinstellungen\n");
+            printf("##################\n");
+
             printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
 
             scanf("%d", &SPIELFELDGROESSE);
@@ -123,13 +125,6 @@ int main() {
 
             sprintf(DatenPaket,"%d",SPIELFELDGROESSE);
             printf("Spielfeld ist: %s groß \n", DatenPaket);
-
-           // Convstring[0]= (char) SPIELFELDGROESSE;
-            //strcpy(DatenPaket, Convstring);
-            //DatenPaket[1] = '\0';
-
-            //DatenPaket[0] = (char) &SPIELFELDGROESSE;
-           // printf("Spielfeld ist: %d groß", DatenPaket[0]);
 
             SendenBrauchbar(DatenPaket,1,1);
 
@@ -215,6 +210,8 @@ int main() {
             printf("Netzwerkfehler aufgetreten!\n");
         }
 
+        // INITIALISIERUNG FÜR SPIEL
+
         int gewinnerValue = 0;
         KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
 
@@ -243,7 +240,7 @@ int main() {
                         scanf(" %d,%d", &x, &y);
                         int z = (1 * y) + (10 * x);
                         sprintf(DatenPaket, "%d", z);
-                        printf("%s", DatenPaket);
+                       // printf("%s", DatenPaket);
                         a = doTurn(Spieler1, Playfield,1, x, y);
                     }while(a == -1);
 
@@ -268,7 +265,6 @@ int main() {
                 drawTicTacToeField(Playfield);
             }
 
-            gewinnerValue = testForWinner(Playfield);
 
             if(testForWinner(Playfield) == 2){
                 printf("Das Feld ist voll, Unentschieden\n");
@@ -289,7 +285,7 @@ int main() {
                         scanf(" %d,%d", &x, &y);
                         int z = (1 * y) + (10 * x);
                         sprintf(DatenPaket, "%d", z);
-                        printf("%s", DatenPaket);
+                       // printf("%s", DatenPaket);
                         a = doTurn(Spieler2, Playfield,1, x, y);
                     }while(a == -1);
 
@@ -312,7 +308,6 @@ int main() {
                 }
 
                 drawTicTacToeField(Playfield);
-              //  gewinnerValue = testForWinner(Playfield);
             }
 
             gewinnerValue = testForWinner(Playfield);
@@ -325,7 +320,7 @@ int main() {
             counter++;
             system("clear");
         }
-
+        //Anhand des Counters(Runden) wird Gewinner ermittelt
         if(counter % 2 == 0){
             printf("%s ist Sieger\n",Spieler2.name);
         } else {
@@ -334,17 +329,8 @@ int main() {
         return 1;
     }
 
-    /*
-     *   drawTicTacToeField(Playfield);
 
-        if(counter % 2 == 0){
-            printf("%s ist Sieger\n",Spieler2.name);
-        } else {
-            printf("%s ist Sieger\n",Spieler1.name);
-        }
-        return 1;
-     */
-
+    //Singleplayer
 
     printf("Spieleinstellungen\n");
     printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
@@ -357,7 +343,7 @@ int main() {
         SPIELFELDGROESSE = 10;
     }
     //KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
-/*
+
     printf("------------------\n");
     printf("Spielereinstellungen\n");
     //Spieler 1
@@ -368,7 +354,7 @@ int main() {
     printf("Typ von %s (1 Computer, 0 Spieler) : ", Spieler1.name);
     scanf(" %d", &Spieler1.type);
     printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler1.name, Spieler1.zeichen, Spieler1.type);
-    printf("------------------\n"); */
+    printf("------------------\n");
     //Spieler 2
     printf("Spieler 2: ");
     scanf("%s", &Spieler2.name);
