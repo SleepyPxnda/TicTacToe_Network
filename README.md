@@ -62,4 +62,4 @@ Wenn ein Spieler gewonnen hat, wird der Sieger ermittelt und ausgegeben.        
 In beiden Fällen ist der Programmablauf beendet.
 
 # Gruppe
-Felix Grohme, Dennis Mayer, Daniel De Marco
+Felix Grohme, Dennis Maier, Daniel De Marco
