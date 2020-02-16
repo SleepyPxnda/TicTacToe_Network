@@ -2,7 +2,7 @@
 # Projekt nur über Windows Spielbar
 
 - [Entwicklerdokumentation](#entwicklerdokumentation)
-  * [Vorraussetzungen](#vorraussetzung-für-multiplayer)
+  * [Vorraussetzungen](#vorraussetzung-fuer-multiplayer)
   * [Spielablauf](#spielablauf)
   * [Gewinntester](#gewinntester)
   * [Computerspieler](#computerspieler)
