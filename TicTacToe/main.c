@@ -222,30 +222,25 @@ int main() {
         system("clear");
         int counter = 0;
         while(gewinnerValue == 0){
+            if(gewinnerValue == 0) {
+                ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
+                if (ZugEmpfangen == 1) {
+                    ZugEmpfangen = 0;
+                    doTurn(Spieler1, Playfield, 1, atoi(string_1), atoi(string_2));
+                } else { doTurn(Spieler1, Playfield, 1, x, y); }
 
-            ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
-            if(ZugEmpfangen == 1) {
-                ZugEmpfangen = 0;
-                doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
-            } else { doTurn(Spieler1,Playfield,1,x,y);}
-
-            drawTicTacToeField(Playfield);
-            gewinnerValue = testForWinner(Playfield);
-            if(gewinnerValue != 0) {
-                break;
+                drawTicTacToeField(Playfield);
+                gewinnerValue = testForWinner(Playfield);
             }
+            if(gewinnerValue == 0) {
+                ClientTurn(Spielernummer);
+                if (ZugEmpfangen == 1) {
+                    ZugEmpfangen = 0;
+                    doTurn(Spieler2, Playfield, 1, atoi(string_1), atoi(string_2));
+                } else { doTurn(Spieler2, Playfield, 1, x, y); }
 
-            ClientTurn(Spielernummer);
-            if(ZugEmpfangen == 1) {
-                ZugEmpfangen = 0;
-                printf("#%c#",Spieler2.zeichen);
-                doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
-            } else {doTurn(Spieler2,Playfield,1,x,y);}
-
-            drawTicTacToeField(Playfield);
-            gewinnerValue = testForWinner(Playfield);
-            if(gewinnerValue != 0) {
-                break;
+                drawTicTacToeField(Playfield);
+                gewinnerValue = testForWinner(Playfield);
             }
 /*
             if(Spielernummer == 2) { //Server ist als erstes am Zug
@@ -391,7 +386,6 @@ ClientTurn(int Spielernummer) {
         while(checkMessage == 0) {Sleep(100);} // warten...
         checkMessage = 0;
         aktivListen = 0;
-        printf("bigbruh");
         ZugEmpfangen = 1;
 
 
