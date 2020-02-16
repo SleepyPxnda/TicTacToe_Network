@@ -2,6 +2,7 @@
 # Projekt nur über Windows Spielbar
 
 - [Entwicklerdokumentation](#entwicklerdokumentation)
+  * [Vorraussetzungen](#Vorraussetzung-für-Multiplayer)
   * [Spielablauf](#spielablauf)
   * [Gewinntester](#gewinntester)
   * [Computerspieler](#computerspieler)
@@ -13,12 +14,14 @@
   * [Spieleinstellungen](#spieleinstellungen)
   * [Spielablauf](#spielablauf-1)
 
+
+
+# Entwicklerdokumentation
+
 ## Vorraussetzungen für Multiplayer
 - Serverseite darf keine Firewall anhaben
 oder
 - Entsprechende TCP Packete müssen Serverseitig erlaubt werden
-
-# Entwicklerdokumentation
 
 ## Spielablauf
 Das Spiel beginnt mit diversen Einstellungsdialogen, wir fragen hier die Spielfeldgröße ab. Basierend auf dieser Eingabe wird darauf das Spielfeld generiert. Das Spielfeld repräsentieren wir in unserem Fall mit einem 2D-Array, welches aus Koordinaten structs besteht. Diese Koordinatenstructs enthalten einen x-Wert, einen y-Wert und das Zeichen, welches bei einem Zug darin gespeichert wird, um das Zeichen zu erleichtern. Danach fragen wir die Daten der beiden Spieler ab. Diese speichern wir in einem struct namens Spieler, welches aus den Namen und das Zeichen, des Spielers enthält, sowie die Information ob dieser Spieler ein Computer oder ein realer Spieler ist. Wurden diese Informationen nun eingegeben, leert sich die Konsole der Übersichtlichkeit wegen, und das leere Spielfeld wird gezeichnet. Dies haben wir durch eine einfache Funktion „drawTicTacToeField“ realisiert, welche durch unser Array itariert und jedes Koordinatenzeichen aufmalt. Nun beginnt der Spielablauf. Die Spieler werden nacheinander durch Konsolenaufforderungen dazu bewegt Koordinaten im Format „(reihe , spalte)“ einzugeben. Dies geschieht solange bis einer der Spieler ein, nach den Regeln von TicTacToe, Gewinn erzielt hat. Da wir mit einer unbestimmt Spielfeldgröße arbeiten, haben wir den Spielablauf in eine While-Schleife gebaut. Somit kann das Spiel beliebig groß sein, und wir beenden das Spiel nie vorzeitig. Hat ein Spieler nun gewonnen, wird dies über eine Nachricht im Terminal ausgegeben. Zudem wird das Spielfeld basierend auf dem letzten Zug angezeigt.
