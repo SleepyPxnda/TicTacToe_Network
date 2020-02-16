@@ -15,7 +15,6 @@
   * [Spielablauf](#spielablauf-1)
 
 
-
 # Entwicklerdokumentation
 
 ## Vorraussetzungen fuer Multiplayer
