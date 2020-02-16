@@ -62,5 +62,5 @@ Ein Spieler hat gewonnen, wenn er es schafft eine ganze Reihe, Spalte oder Diago
 Wenn ein Spieler gewonnen hat, wird der Sieger ermittelt und ausgegeben.                                      Ist das Spielfeld voll und es gibt keinen Sieger wird unentschieden ausgegeben.
 In beiden Fällen ist der Programmablauf beendet.
 
-#Gruppe:
+# Gruppe
 Felix Grohme, Dennis Mayer, Daniel De Marco
