@@ -16,9 +16,7 @@ int x,y;
 
 ClientTurn(int Spielernummer);
 ServerTurn(int Spielernummer);
-GiveKoordsToMain(int x, int y);
 char tempstring[2];
-int GetTempstring(char x);
 int ZugEmpfangen = 0;
 
 
@@ -127,7 +125,7 @@ int main() {
 
             SendenBrauchbar(DatenPaket,1,1);
 
-            printf("Das Spiel beginnt...");
+            printf("Das Spiel beginnt...\n");
             Spielernummer = 1;
 
 
@@ -160,7 +158,9 @@ int main() {
 
             do {
             printf("------------------\n");
-            printf("Spieler 1: %s, mit %s",string_1,string_2);
+            printf("Spieler 1: %s, mit %s\n",string_1,string_2);
+            strcpy(Spieler1.name,string_1);
+            Spieler1.zeichen = (char) string_2;
             printf("------------------\n");
             printf("Spielereinstellungen\n");
             //Spieler 2
@@ -202,7 +202,7 @@ int main() {
             Spielernummer = 2;
 
         } else if (networkcheck == -1) {
-            printf("Netzwerkfehler aufgetreten!");
+            printf("Netzwerkfehler aufgetreten!\n");
         }
 
         KOORDINATE Playfield[SPIELFELDGROESSE][SPIELFELDGROESSE];
@@ -232,6 +232,7 @@ int main() {
             ClientTurn(Spielernummer);
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
+                printf("#%c#",Spieler2.zeichen);
                 doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
             } else {doTurn(Spieler2,Playfield,1,x,y);}
 
@@ -430,13 +431,6 @@ ServerTurn(int Spielernummer) {
     }
 
 
-
-}
-
-int GetTempstring(char x) {
-    if(x == 'x') {
-       // return atoi(tempstring[0]);
-    } //else return atoi(tempstring[2]);
 
 }
 
