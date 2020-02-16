@@ -220,7 +220,7 @@ int main() {
             ServerTurn(Spielernummer); //Server ist dran mit Nummer 1
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
+                doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
             } else { doTurn(Spieler1,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
@@ -232,7 +232,7 @@ int main() {
             ClientTurn(Spielernummer);
             if(ZugEmpfangen == 1) {
                 ZugEmpfangen = 0;
-                doTurn(Spieler1,Playfield,1,atoi(string_1),atoi(string_2));
+                doTurn(Spieler2,Playfield,1,atoi(string_1),atoi(string_2));
             } else {doTurn(Spieler2,Playfield,1,x,y);}
 
             drawTicTacToeField(Playfield);
@@ -378,7 +378,7 @@ ClientTurn(int Spielernummer) {
 
     } else if(Spielernummer == 1){
 
-        printf("Spieler: 1 ist am Zug!\n");
+        printf("Spieler: 2 ist am Zug!\n");
         aktivListen = 1;
         printf("Bitte warten... \n");
         while(checkMessage == 0) {Sleep(100);} // warten...
@@ -404,6 +404,7 @@ ServerTurn(int Spielernummer) {
       //  sprintf(DatenPaket,"%d",tempInt[1]);
        // scanf(" %s", &tempstring);
        // strcpy(DatenPaket,tempstring);
+        printf("Spieler: 1 ist am Zug");
         printf("Eingabe als 1,1 2,2 usw \n");
         x = 0;
         y = 0;
@@ -415,7 +416,7 @@ ServerTurn(int Spielernummer) {
 
     } else if(Spielernummer == 2){
 
-        printf("Spieler: 2 ist am Zug\n");
+        printf("Spieler: 1 ist am Zug\n");
         aktivListen = 1;
         printf("Bitte warten... \n");
         while(checkMessage == 0) {Sleep(100);} // warten...
