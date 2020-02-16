@@ -96,8 +96,12 @@ int main() {
             aktivListen = 1; // Listen Thread für Kommunikation wird aktiviert
 
             while(checkMessage == 0) {Sleep(100);} // warten...
-
             checkMessage = 0;
+
+            //Datenpaket vom Clienten empfangen mit validem Spielernamen und Zeichen
+            strcpy(Spieler2.name,string_1);
+            Spieler2.zeichen = string_2[0];
+
 
             printf("Spieleinstellungen\n");
             printf("Wie groß soll das Spielfeld sein : (3 - 10)\n");
@@ -159,8 +163,10 @@ int main() {
             do {
             printf("------------------\n");
             printf("Spieler 1: %s, mit %s\n",string_1,string_2);
+
             strcpy(Spieler1.name,string_1);
-            Spieler1.zeichen = (char) string_2;
+            Spieler1.zeichen = string_2[0];
+
             printf("------------------\n");
             printf("Spielereinstellungen\n");
             //Spieler 2
