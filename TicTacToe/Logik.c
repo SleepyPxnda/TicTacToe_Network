@@ -3,7 +3,6 @@
 //
 
 #include "StructDefinitions.h"
-#include "ErrorMessages.h"
 #include "ComputerLogic.h"
 #include "Logik.h"
 
@@ -28,7 +27,7 @@ int setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORD
             return 0;
         }
     } else {
-        printf(NUMBEROUTOFBOUNDS);
+        printf("Die Zahl ist zu groß/klein");
     }
     return 1;
 }
@@ -36,14 +35,14 @@ int setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORD
 
 int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 
+
     //Horizontal Check for Win
     for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
         int rowCellEquals = 0;
-        for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
+        for(int spalte = 0; spalte < SPIELFELDGROESSE - 1; spalte++){ //Keine Ahnung wieso, aber sonst klappt der Hori Wincheck nicht
             if(Feld[reihe][spalte].value != CELLPLACEHOLDER) {
                 if (Feld[reihe][spalte].value == Feld[reihe][spalte + 1].value) {
                     rowCellEquals += 1;
-
                 }
             }
         }
@@ -64,7 +63,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
                 }
         }
         if(rowCellEquals == SPIELFELDGROESSE - 1){
-            return 1;
+            return 2;
         }
     }
 
@@ -78,7 +77,7 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         }
     }
     if(rowCellsEqualsUp == SPIELFELDGROESSE - 1){
-        return 1;
+        return 3;
     }
 
     //Anti Diagonal Check for Win
@@ -96,12 +95,11 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         diagonalspalte++;
     }
     if(rowCellsEqualsDown == SPIELFELDGROESSE - 1){   // Abfrage für Spieler
-        return 1;
+        return 4;
     }
     if(rowCellsEqualsDown == SPIELFELDGROESSE){       // Abfrage für Computer, weil andere Koordinateneinheit FIX?
-        return 1;
+        return 4;
     }
-
     int maxCells = 0;
     for(int spalte = 0; spalte < SPIELFELDGROESSE; spalte++){
         for(int reihe = 0; reihe < SPIELFELDGROESSE; reihe++){
@@ -111,8 +109,9 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
         }
     }
     if(maxCells == SPIELFELDGROESSE * SPIELFELDGROESSE){
-        return 2;
+        return 5;
     }
+
     return 0;
 }
 
@@ -123,6 +122,7 @@ int doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],i
     if (player.type == 0 && mode == 0){
         printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x,y)\n", player.name);
         scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
+
 
     } else if(player.type == 1){
             sleep(1);
@@ -139,7 +139,6 @@ int doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],i
             printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
             return -1;
         } else {return 0;}
-
     }
 
     scanKoord.value = player.zeichen;
@@ -147,6 +146,7 @@ int doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],i
     while(setMarkAtPosition(Feld,scanKoord) == 0 && mode == 0){
         printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
         scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
+
     }
 
 }
