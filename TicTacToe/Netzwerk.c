@@ -221,7 +221,6 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
      * nehme array von stelle 0 bis size 1 und kopiere das in ein anderes array, das setzt bei size1+1 ein \0
      *
      */
-   // printf(" %s",Datenpaket);
 
     strcpy(string_1,Datenpaket); // ich nehme mein string_1 array und kopiere den inhalt da rein
     string_1[string1length] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
@@ -316,26 +315,6 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
 
 }
 
-char *GetMessages(int a) {
-
-
-
-    if(a == 1) {
-
-        char* arr = malloc(100);
-        strcpy(arr,string_1);
-        return arr;
-
-    }
-
-    if(a == 2) {
-
-        char* arr = malloc(100);
-        strcpy(arr,string_2);
-        return arr;
-
-    }
-}
 
 
 

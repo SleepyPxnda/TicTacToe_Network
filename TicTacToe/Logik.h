@@ -13,6 +13,5 @@ int setMarkAtPosition(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE], KOORD
 int doTurn(SPIELER player,KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode, int x,int y);
 KOORDINATE getCoordinateForComputer(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]);
 int SendenBrauchbar(char *Datenpaket, int string1, int string2);
-int GetTempstring(char x);
 
 #endif //TICTACTOE_LOGIK_H
