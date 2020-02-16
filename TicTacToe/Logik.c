@@ -4,6 +4,9 @@
 
 #include "StructDefinitions.h"
 #include "ComputerLogic.h"
+#include "Logik.h"
+
+#
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -113,27 +116,41 @@ int testForWinner(KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]) {
 }
 
 
-void doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE]){
+int doTurn(SPIELER player, KOORDINATE Feld[SPIELFELDGROESSE][SPIELFELDGROESSE],int mode,int x,int y){
     KOORDINATE scanKoord;
 
+    if (player.type == 0 && mode == 0){
+        printf(" %s ist am Zug, wo möchtest du etwas setzen ? (x,y)\n", player.name);
+        scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
 
-    if (player.type == 0){
-        printf("\033[34m %s ist am Zug, wo möchtest du etwas setzen ? (x , y)\033[0m\n", player.name);
-        scanf(" %d %d", &scanKoord.x, &scanKoord.y);
-    } else
-        if(player.type == 1){
+
+    } else if(player.type == 1){
             sleep(1);
         scanKoord = getCoordinateForComputer(Feld);
-        printf("\033[34mDer Computer %s hat ein Zeichen an %d , %d gesetzt\033[0m\n",player.name, scanKoord.x, scanKoord.y);
+        printf("Der Computer %s hat ein Zeichen an %d , %d gesetzt\n",player.name, scanKoord.x, scanKoord.y);
+    } else if (player.type == 0 && mode == 1){
+
+        scanKoord.x = x;
+        scanKoord.y = y;
+
+        scanKoord.value = player.zeichen;
+
+        if(setMarkAtPosition(Feld,scanKoord) == 0) {
+            printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
+            return -1;
+        } else {return 0;}
     }
 
     scanKoord.value = player.zeichen;
 
-    while(setMarkAtPosition(Feld,scanKoord) == 0){
-        printf("\033[31mDieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\033[0m\n");
-        scanf(" %d %d", &scanKoord.x, &scanKoord.y);
+    while(setMarkAtPosition(Feld,scanKoord) == 0 && mode == 0){
+        printf("Dieses Feld ist bereits belegt, bitte gebe 2 neue Koordinaten ein\n");
+        scanf(" %d,%d", &scanKoord.x, &scanKoord.y);
+
     }
+
 }
+
 
 
 
