@@ -14,35 +14,20 @@
 #include <tchar.h>
 //#include <strsafe.h>
 
-#define MAX_THREADS 3
-#define BUF_SIZE 255
-
-
-//für TCP hinzugefügt - was macht das??
-//#include&lt;stdio.h&gt;
-//#include&lt;winsock2.h&gt;
-
-//#pragma comment(lib,"WS2_32")//Winsock Library, die für Funktionen der winsock2.h notwending ist.
 
 char hosttyp = ' ';
 char DataToMe[64] = "Moin";
-char DataToHim[64] = "-";
 char targetIP[256];
-char OwnIP[256];
 int Verbindung = 1;
 char string_1[20];
 char string_2[20];
 SOCKET ClientSocket = INVALID_SOCKET;
-int ReadMessage(int socket, char * DataToMe, int modus);
+int ReadMessage(int socket, char * DataToMe);
 int SendMessageToClient(int socket, char *message, char *intarray);
 int aktivListen = 0;
 int messageStatus = 0;
-int modus = 0;
 int checkMessage = 0;
 char tempstring[60];
-char *GetMessages(int a);
-
-
 
 
 
@@ -52,26 +37,21 @@ int GetOtherSocket() {
     return ClientSocket;
 }
 
-ChangeModus(int a) {
-
-    modus = a;
-
-}
 
 DWORD WINAPI ThreadFunc(void* data) {
-    // Do stuff.  This will be the first function called on the new thread.
-    // When this function returns, the thread goes away.  See MSDN for more details.
+    // Thread, der das beim erstellen aufruft:
+    //
     printf("thread meldet sich! \n");
     while(Verbindung == 1) {
         while (aktivListen == 1) {
             Sleep(500);
-            ReadMessage(ClientSocket, DataToMe, modus);
+            ReadMessage(ClientSocket, DataToMe);
             //printf("ich lese...\n");
         }
     }
 
 
-    // return 0; return löscht thread
+     return 0; //löscht thread
 }
 
 
@@ -199,7 +179,7 @@ int GetHosttype() {
 
 }
 
-int ThreadErstellen(int erkennung) {
+int ThreadErstellen() {
 
     HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);
     if (thread) {
@@ -221,7 +201,6 @@ int SendenBrauchbar(char *Datenpaket, int string1length, int string2length) {
      * nehme array von stelle 0 bis size 1 und kopiere das in ein anderes array, das setzt bei size1+1 ein \0
      *
      */
-   // printf(" %s",Datenpaket);
 
     strcpy(string_1,Datenpaket); // ich nehme mein string_1 array und kopiere den inhalt da rein
     string_1[string1length] = '\0'; // nach dem string1 Länge des 1. Strings +1 und \0 zum abschließen
@@ -265,7 +244,7 @@ int SendMessageToClient(int socket, char *message, char *intarray){
 
 }
 
-int ReadMessage(int socket, char * DataToMe, int modus) {
+int ReadMessage(int socket, char * DataToMe) {
     int a,b, recv_size;
 
     recv_size = recv(socket, DataToMe,65,0); // 1. Auswertung sind immer die beiden Integer
@@ -316,26 +295,6 @@ int ReadMessage(int socket, char * DataToMe, int modus) {
 
 }
 
-char *GetMessages(int a) {
-
-
-
-    if(a == 1) {
-
-        char* arr = malloc(100);
-        strcpy(arr,string_1);
-        return arr;
-
-    }
-
-    if(a == 2) {
-
-        char* arr = malloc(100);
-        strcpy(arr,string_2);
-        return arr;
-
-    }
-}
 
 
 

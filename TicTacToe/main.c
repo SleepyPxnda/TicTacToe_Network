@@ -14,8 +14,6 @@ char Convstring[2] = {'0','\0'};
 int Spielernummer = 0;
 int x,y;
 
-ClientTurn(int Spielernummer);
-ServerTurn(int Spielernummer);
 char tempstring[2];
 int ZugEmpfangen = 0;
 
@@ -28,25 +26,12 @@ int main() {
     SPIELER Spieler1;
     SPIELER Spieler2;
 
-
-
-    //sprintf(DatenPaket,"%d",tempInt[1]);
-
-        /*
-    char temp[10] = "Stefan1";
-    strncpy(DatenPaket,temp,7);
-    DatenPaket[7]='\0';
-    SendenBrauchbar(DatenPaket,6,1); */ // test fürs senden - funktioniert!
-
-
     // 1. Server / Client festlegen
     // Server: Spielername, Zeichen
-    // Client: Spielername, Zeichen an Server senden, wenn Server == Client name oder zeichen -> client neu anfragen
+    // Server: Spielername, Zeichen an Client senden, wenn Server == Client name oder zeichen -> client neu eingeben
 
     printf("Guten Tag Spieler! \n");
     do {
-        //abfrage = '0';
-        //printf("%s",abfrage);
         printf("Was darf es sein? - Single- oder Multiplayer? [s] [m] \n");
         scanf(" %c", &abfrage);
     } while (abfrage != 's' && abfrage != 'm');
@@ -56,24 +41,13 @@ int main() {
     if(abfrage == 'm') {
 
         int networkcheck = GetHosttype();
-        int threadDebug = ThreadErstellen(networkcheck);
+        ThreadErstellen(networkcheck);
         Spieler1.type = 0; //Beides Spieler typen
         Spieler2.type = 0;
 
         if (networkcheck == 0) {
+
             //Server
-/*
-            printf("------------------\n");
-            printf("Spielereinstellungen\n");
-            //Spieler 1
-            printf("Spieler Server: [name] ");
-            scanf("%s", &Spieler1.name);
-            printf("Zeichen von %s : ", Spieler1.name);
-            scanf(" %c", &Spieler1.zeichen);
-            printf("Spieler 1 eingeloggt: %s - %c - %d \n", Spieler1.name, Spieler1.zeichen, Spieler1.type);
-            printf("------------------\n");
-            printf("Frage Daten vom Clienten ab...");
-*/
 
             printf("------------------\n");
             printf("Spielereinstellungen\n");
@@ -125,24 +99,16 @@ int main() {
 
             sprintf(DatenPaket,"%d",SPIELFELDGROESSE);
             printf("Spielfeld ist: %s groß \n", DatenPaket);
-
-            SendenBrauchbar(DatenPaket,1,1);
+            if(SPIELFELDGROESSE <10) {
+                SendenBrauchbar(DatenPaket, 1, 1);
+            } else {SendenBrauchbar(DatenPaket, 2, 1);}
 
             printf("Das Spiel beginnt...\n");
             Spielernummer = 1;
 
 
-
-            //Spielername und Zeichen
-            // überprüfen ob client name oder zeichen gleich ist ( wenn ja, nochmal
-            // Random zwischen Spieler 1 und zwei auswählen RandZahl
-            //RandZahl an Client schicken, -> Du bist spieler ...
-            // "Du Bist Spieler .."
-            // Spielfeldgröße? wird als Paket geschickt an Client
-            // derjenige, der Spieler 1 ist, beginnt ein Paket rüberzuschicken mit 1 4 oder so und aktualisiert das gleichzeitig in seinem Spiel
-
-
         } else if (networkcheck == 1) {
+
             //Client
 
             printf("Hallo Spieler 2! \n");
@@ -425,83 +391,9 @@ int main() {
     }
     printf("\033[0m");
 
-
-
-
     return 1;
 }
 
-ClientTurn(int Spielernummer) {
-
-    if(Spielernummer == 2) {
-
-        printf("Spieler: 2 ist am Zug!\n");
-        printf("Eingabe als 1,1 2,2 usw \n");
-        x = 0;
-        y = 0;
-        scanf(" %d,%d",&x,&y);
-        int z = (1*y)+(10*x);
-        sprintf(DatenPaket,"%d",z);
-        printf("%s",DatenPaket);
-        SendenBrauchbar(DatenPaket,1,1);
-
-    } else if(Spielernummer == 1){
-
-        printf("Spieler: 2 ist am Zug!\n");
-        aktivListen = 1;
-        printf("Bitte warten... \n");
-        while(checkMessage == 0) {Sleep(100);} // warten...
-        checkMessage = 0;
-        aktivListen = 0;
-        ZugEmpfangen = 1;
 
 
-
-
-    }
-
-}
-
-ServerTurn(int Spielernummer) {
-
-    if(Spielernummer == 1) {
-
-        //scanf("%d,%d",tempInt[0],tempInt[1]);
-      //  sprintf(DatenPaket,"%d",tempInt[0]);
-       // sprintf(DatenPaket,"%d",tempInt[1]);
-      //  sprintf(DatenPaket,"%d",tempInt[1]);
-       // scanf(" %s", &tempstring);
-       // strcpy(DatenPaket,tempstring);
-        printf("Spieler: 1 ist am Zug");
-        printf("Eingabe als 1,1 2,2 usw \n");
-        x = 0;
-        y = 0;
-        int a = 0;
-        do {
-            scanf(" %d,%d", &x, &y);
-            int z = (1 * y) + (10 * x);
-            sprintf(DatenPaket, "%d", z);
-            printf("%s", DatenPaket);
-            //a = doTurn(Spieler1, PLAYFIELD,1, x, y);
-        }while(a != -1);
-        SendenBrauchbar(DatenPaket,1,1);
-
-    } else if(Spielernummer == 2){
-
-        printf("Spieler: 1 ist am Zug\n");
-        aktivListen = 1;
-        printf("Bitte warten... \n");
-        while(checkMessage == 0) {Sleep(100);} // warten...
-        checkMessage = 0;
-        aktivListen = 0;
-        ZugEmpfangen = 1;
-
-
-
-
-    }
-
-
-
-}
 
