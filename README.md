@@ -2,7 +2,7 @@
 # Projekt nur über Windows Spielbar
 
 - [Entwicklerdokumentation](#entwicklerdokumentation)
-  * [Vorraussetzungen für Multiplayer](#vorraussetzung-f-r-multiplayer)
+  * [Vorraussetzungen für Multiplayer](#vorraussetzung-fuer-multiplayer)
   * [Spielablauf](#spielablauf)
   * [Gewinntester](#gewinntester)
   * [Computerspieler](#computerspieler)
@@ -18,7 +18,7 @@
 
 # Entwicklerdokumentation
 
-## Vorraussetzungen für Multiplayer
+## Vorraussetzungen fuer Multiplayer
 - Serverseite darf keine Firewall anhaben
 oder
 - Entsprechende TCP Packete müssen Serverseitig erlaubt werden
