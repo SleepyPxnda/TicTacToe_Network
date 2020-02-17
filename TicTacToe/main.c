@@ -271,8 +271,6 @@ int main() {
 
             drawTicTacToeField(Playfield);
             gewinnerValue = testForWinner(Playfield);
-
-            system("clear");
         }
 
         if (gewinnerValue == 2) {
