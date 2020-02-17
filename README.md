@@ -1,5 +1,6 @@
 # TicTacToe_Network
 ## Projekt nur über Windows Spielbar
+### Falls der "Master" Branch nicht spielbar ist, haben wir den Backupbranch "IHopeIDindntBreakMaster" aktuell gehalten
 
 - [Entwicklerdokumentation](#entwicklerdokumentation)
   * [Vorraussetzungen fuer Multiplayer](#vorraussetzungen-fuer-multiplayer)
