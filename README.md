@@ -1,6 +1,6 @@
 # TicTacToe_Network
 ## Projekt nur über Windows Spielbar
-### Falls der "Master" Branch nicht spielbar ist, haben wir den Backupbranch "HopeIDindntBreakMaster" aktuell gehalten
+### "Master"-Branch nicht spielbar, spielbare Version ist auf "network-final" zu finden
 
 - [Entwicklerdokumentation](#entwicklerdokumentation)
   * [Vorraussetzungen fuer Multiplayer](#vorraussetzungen-fuer-multiplayer)
